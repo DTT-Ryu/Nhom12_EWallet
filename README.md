@@ -18,7 +18,7 @@ cd Nhom12_Ewallet
 Tạo Database trên SQL Server
 Mở SQL Server Management Studio (SSMS) và đăng nhập vào SQL Server (nếu có).
 
-Mở file script Database.sql hoặc chạy các lệnh CREATE TABLE theo mô hình dữ liệu của bạn.
+Mở file script EWallet-script.sql hoặc chạy các lệnh CREATE TABLE theo mô hình dữ liệu của bạn.
 
 ### 3. Cấu hình `appsettings.json`
 Trong thư mục **Nhom12_Ewallet**, tạo tệp `appsettings.json` và thêm nội dung sau:
