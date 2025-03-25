@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using Nhom12_EWallet.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ??
+    throw new InvalidOperationException("Cannot find the connection string 'ApplicationDbContext'")));
 
 var app = builder.Build();
 
