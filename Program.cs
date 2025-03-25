@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Nhom12_EWallet.Data;
+using Nhom12_EWallet.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
