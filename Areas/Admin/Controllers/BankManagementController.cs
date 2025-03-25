@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Nhom12_EWallet.Controllers
+namespace Nhom12_EWallet.Area.Admin.Controllers
 {
-    public class BankAccountController : Controller
+    [Area("Admin")]
+    public class BankManagementController : Controller
     {
+
         public IActionResult Index()
         {
             return View();
