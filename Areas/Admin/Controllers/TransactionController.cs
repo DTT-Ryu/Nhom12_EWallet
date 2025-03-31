@@ -2,7 +2,7 @@
 
 namespace Nhom12_EWallet.Areas.Admin.Controllers
 {
-    public class BankAccountManagementController : Controller
+    public class TransactionController : Controller
     {
         public IActionResult Index()
         {

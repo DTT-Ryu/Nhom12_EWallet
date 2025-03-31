@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nhom12_EWallet.Models;
 
@@ -17,7 +18,7 @@ namespace Nhom12_EWallet.Controllers
         {
             return View();
         }
-
+        
         public IActionResult Privacy()
         {
             return View();

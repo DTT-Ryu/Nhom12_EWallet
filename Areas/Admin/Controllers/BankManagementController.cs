@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Nhom12_EWallet.Area.Admin.Controllers
+namespace Nhom12_EWallet.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class BankManagementController : Controller
