@@ -18,7 +18,7 @@ CREATE TABLE tblUsers (
     sEmail VARCHAR(100) UNIQUE NOT NULL,       -- Email
     fBalance DECIMAL(15,2) DEFAULT 0,          -- Số dư ví
     sPasswordHash VARCHAR(255) NOT NULL,       -- Mật khẩu đã mã hóa
-    sPinCode VARCHAR(6) NOT NULL,              -- Mã PIN
+    sPinCode VARCHAR(255) NOT NULL,              -- Mã PIN
     iRoleID_FK TINYINT NOT NULL,               -- Mã quyền (FK)
     dCreatedAt DATETIME DEFAULT GETDATE(),     -- Ngày tạo tài khoản
     dUpdatedAt DATETIME DEFAULT GETDATE(),     -- Thời gian cập nhật thông tin

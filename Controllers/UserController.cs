@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Nhom12_EWallet.Models;
 using Nhom12_EWallet.Respositories;
 using Nhom12_EWallet.ViewModels;
 
@@ -18,7 +19,8 @@ namespace Nhom12_EWallet.Controllers
             return View();
         }
 
-        public IActionResult Login(UserViewModel model)
+        [HttpPost]
+        public IActionResult Login(LoginVM model)
         {
             if (!ModelState.IsValid)
             {
@@ -29,6 +31,12 @@ namespace Nhom12_EWallet.Controllers
             if (user == null || user.SPasswordHash != model.Password)
             {
                 ModelState.AddModelError("", "Số điện thoại hoặc mật khẩu không đúng.");
+                return View(model);
+            }
+
+            if (user.SStatus == "blocked")
+            {
+                ModelState.AddModelError("", "Tài khoản đã bị khóa!");
                 return View(model);
             }
 
@@ -57,9 +65,64 @@ namespace Nhom12_EWallet.Controllers
             return RedirectToAction("Login", "User");
         }
 
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Register(RegisterVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    Console.WriteLine("Lỗi: " + error.ErrorMessage); // Hoặc log vào file hoặc database
+                }
+                return View(model);
+            }
+
+            bool hasError = false;
+            //check sđt
+            var existPhoneNumber = _userRepository.GetUserByPhoneNumber(model.PhoneNumber);
+            if (existPhoneNumber != null)
+            {
+                ModelState.AddModelError("PhoneNumber", "Số điện thoại đã tồn tại.");
+                hasError = true;
+            }
+
+            //check cccd
+            var existCCCD = _userRepository.GetUserByCCCD(model.CCCD);
+            if (existCCCD != null)
+            {
+                ModelState.AddModelError("CCCD", "Căn cước công dân đã tồn tại.");
+                hasError = true;
+            }
+
+            if (hasError)
+            {
+                return View(model);
+            }
+
+            var newUser = new TblUser
+            {
+                SFullName = model.FullName,
+                SPhoneNumber = model.PhoneNumber,
+                SCccd = model.CCCD,
+                DBirthDate = DateOnly.FromDateTime(model.BirthDate),
+                SEmail = model.Email,
+                FBalance = 0,
+                SPasswordHash = model.Password,
+                SPinCode = model.PinCode,
+                IRoleIdFk = 2,
+                DCreatedAt = DateTime.Now,
+                DUpdatedAt = null,
+            };
+
+            _userRepository.AddUser(newUser);
+            return RedirectToAction("Login", "User");
+
         }
 
         public IActionResult Profile()

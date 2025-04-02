@@ -1,4 +1,4 @@
-html {
+﻿html {
   font-size: 14px;
 }
 
@@ -19,4 +19,81 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+.navbar-nav .nav-link {
+    position: relative;
+    font-weight: 500;
+    color: white;
+    padding: 8px 12px;
+    transition: color 0.3s ease-in-out;
+}
+
+
+
+    /* Mục đang chọn */
+
+    .navbar-nav .nav-link.active {
+        color: #ffc107 !important;
+        font-weight: bold;
+        border-bottom: 2px solid #ffc107;
+    }
+
+
+
+    /* Hiệu ứng hover */
+
+    .navbar-nav .nav-link:hover {
+        color: #ffc107 !important;
+    }
+
+.bg-image {
+    background-image: url('/images/bg11.jpg');
+    background-size: cover;
+    /* Đảm bảo ảnh phủ toàn bộ phần tử */
+
+    background-position: center;
+    /* Căn giữa ảnh */
+}
+
+
+
+    .bg-image::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: inherit;
+        filter: blur(5px); /* Làm mờ hình nền với độ mờ cụ thể */
+        z-index: -1;
+    }
+
+
+.navbar img {
+    max-height: 80px;
+    /* Giảm kích thước logo trên màn hình nhỏ */
+}
+
+
+
+h3 {
+    font-size: 1rem;
+    /* Giảm kích thước chữ trên màn hình nhỏ */
+}
+
+#navtitile {
+    font-size: small;
+    /* Giảm kích thước chữ trên màn hình nhỏ */
+}
+
+
+
+.navbar {
+    padding: 10px 0;
+    /* Giảm padding tổng thể */
+}
+.navbar-toggler-icon {
+    color: black !important;
 }

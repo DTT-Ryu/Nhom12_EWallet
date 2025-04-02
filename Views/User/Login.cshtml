@@ -1,5 +1,5 @@
 ﻿@using Nhom12_EWallet.ViewModels
-@model Nhom12_EWallet.ViewModels.UserViewModel
+@model Nhom12_EWallet.ViewModels.LoginVM
 @{
 	ViewData["Title"] = "Đăng nhập";
 	Layout = "~/Views/Shared/_UserLayout.cshtml";
@@ -12,18 +12,18 @@
 			<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 			<div class="mb-2">
 				<label asp-for="PhoneNumber" class="form-label"></label>
-				<input asp-for="PhoneNumber" class="form-control" />
+				<input asp-for="PhoneNumber" class="form-control" placeholder="Nhập số điện thoại"/>
 				<span asp-validation-for="PhoneNumber" class="text-danger mt-1"></span>
 			</div>
 			<div class="mb-2">
 				<label asp-for="Password" class="form-label"></label>
-				<input asp-for="Password" class="form-control" />
+				<input asp-for="Password" class="form-control" placeholder="Nhập mật khẩu"/>
 				<span asp-validation-for="Password" class="text-danger mt-1"></span>
 			</div>
 			<div class="float-end">
 				<a class="text-decoration-none">Quên mật khẩu?</a>
 			</div>
-			<input type="submit" class="btn btn-success w-100 p-2 mt-2" value="Đăng nhập" />
+			<input type="submit" class="btn btn-primary w-100 p-2 mt-2" value="Đăng nhập" />
 			<p class="text-center mt-2">
 				Chưa có tài khoản? <a asp-controller="User" asp-action="Register" class="text-decoration-none">Đăng ký</a>
 			</p>

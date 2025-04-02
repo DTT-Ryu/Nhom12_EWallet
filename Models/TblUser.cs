@@ -47,7 +47,7 @@ public partial class TblUser
     public string SPasswordHash { get; set; } = null!;
 
     [Column("sPinCode")]
-    [StringLength(6)]
+    [StringLength(255)]
     [Unicode(false)]
     public string SPinCode { get; set; } = null!;
 
