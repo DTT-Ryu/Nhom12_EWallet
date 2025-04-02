@@ -6,6 +6,8 @@ namespace Nhom12_EWallet.Respositories
     {
         TblUser? GetUserByPhoneNumber(string pNumber);
         TblUser? GetUserByCCCD(string sCCCD);
+
+        TblUser? GetUserByEmail(string sEmail);
         void AddUser(TblUser user);
     }
 }

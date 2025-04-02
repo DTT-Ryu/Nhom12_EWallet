@@ -38,7 +38,7 @@ namespace Nhom12_EWallet.ViewModels
 
         //Mã PIN
         [Required(ErrorMessage = "Mã PIN không được để trống.")]
-        [RegularExpression(@"^\d{6}$", ErrorMessage = "Mã pin phải có 6 số.")]
+        //[RegularExpression(@"^\d{6}$", ErrorMessage = "Mã pin phải có 6 số.")]
         //[DataType (DataType.Password)]
         [Display(Name = "Mã PIN")]
         public string PinCode { get; set; }

@@ -19,6 +19,10 @@ namespace Nhom12_EWallet.Respositories
             return _context.TblUsers.FirstOrDefault(u => u.SCccd == sCCCD);
         }
 
+        public TblUser? GetUserByEmail(string sEmail)
+        {
+            return _context.TblUsers.FirstOrDefault(u => u.SEmail == sEmail);
+        }
         public void AddUser(TblUser user)
         {
             _context.TblUsers.Add(user); //Thêm người dùng vào DbSet

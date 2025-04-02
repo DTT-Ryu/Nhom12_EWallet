@@ -28,7 +28,7 @@ namespace Nhom12_EWallet.Controllers
             }
 
             var user = _userRepository.GetUserByPhoneNumber(model.PhoneNumber);
-            if (user == null || user.SPasswordHash != model.Password)
+            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.SPasswordHash))
             {
                 ModelState.AddModelError("", "Số điện thoại hoặc mật khẩu không đúng.");
                 return View(model);
@@ -99,11 +99,23 @@ namespace Nhom12_EWallet.Controllers
                 ModelState.AddModelError("CCCD", "Căn cước công dân đã tồn tại.");
                 hasError = true;
             }
+            
+            //check email
+            var existEmail = _userRepository.GetUserByEmail(model.Email);
+            if(existEmail != null)
+            {
+                ModelState.AddModelError("Email", "Email đã tồn tại.");
+                hasError = true;
+            }
 
             if (hasError)
             {
                 return View(model);
             }
+
+            //mã hóa 
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
+            string hashedPin = BCrypt.Net.BCrypt.HashPassword(model.PinCode);
 
             var newUser = new TblUser
             {
@@ -113,8 +125,8 @@ namespace Nhom12_EWallet.Controllers
                 DBirthDate = DateOnly.FromDateTime(model.BirthDate),
                 SEmail = model.Email,
                 FBalance = 0,
-                SPasswordHash = model.Password,
-                SPinCode = model.PinCode,
+                SPasswordHash = hashedPassword,
+                SPinCode = hashedPin,
                 IRoleIdFk = 2,
                 DCreatedAt = DateTime.Now,
                 DUpdatedAt = null,
