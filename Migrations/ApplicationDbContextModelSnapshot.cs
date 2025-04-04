@@ -48,7 +48,7 @@ namespace Nhom12_EWallet.Migrations
                     b.HasIndex(new[] { "SBankName" }, "UQ__tblBanks__16DFBC10429B524F")
                         .IsUnique();
 
-                    b.ToTable("tblBanks");
+                    b.ToTable("tblBanks", (string)null);
                 });
 
             modelBuilder.Entity("Nhom12_EWallet.Models.TblBankAccount", b =>
@@ -95,7 +95,7 @@ namespace Nhom12_EWallet.Migrations
                     b.HasIndex(new[] { "SAccountNumber" }, "UQ__tblBankA__0A9F968F7025F9EB")
                         .IsUnique();
 
-                    b.ToTable("tblBankAccounts");
+                    b.ToTable("tblBankAccounts", (string)null);
                 });
 
             modelBuilder.Entity("Nhom12_EWallet.Models.TblRole", b =>
@@ -116,7 +116,7 @@ namespace Nhom12_EWallet.Migrations
                     b.HasIndex(new[] { "SRoleName" }, "UQ__tblRoles__1295E5A9A1DD0059")
                         .IsUnique();
 
-                    b.ToTable("tblRoles");
+                    b.ToTable("tblRoles", (string)null);
                 });
 
             modelBuilder.Entity("Nhom12_EWallet.Models.TblTransaction", b =>
@@ -177,7 +177,7 @@ namespace Nhom12_EWallet.Migrations
 
                     b.HasIndex("ISenderUserIdFk");
 
-                    b.ToTable("tblTransactions");
+                    b.ToTable("tblTransactions", (string)null);
                 });
 
             modelBuilder.Entity("Nhom12_EWallet.Models.TblUser", b =>
@@ -277,7 +277,7 @@ namespace Nhom12_EWallet.Migrations
                     b.HasIndex(new[] { "SPhoneNumber" }, "UQ__tblUsers__E40346FF189A166A")
                         .IsUnique();
 
-                    b.ToTable("tblUsers");
+                    b.ToTable("tblUsers", (string)null);
                 });
 
             modelBuilder.Entity("Nhom12_EWallet.Models.TblBankAccount", b =>

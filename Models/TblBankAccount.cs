@@ -31,6 +31,8 @@ public partial class TblBankAccount
     [StringLength(10)]
     public string? SStatus { get; set; }
 
+    public bool Deleted { get; set; }
+
     [ForeignKey("IUserIdFk")]
     [InverseProperty("TblBankAccounts")]
     public virtual TblUser IUserIdFkNavigation { get; set; } = null!;

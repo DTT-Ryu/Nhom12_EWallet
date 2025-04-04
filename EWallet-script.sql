@@ -2,11 +2,17 @@
 
 USE EWallet;
 
+  --@MotHaiBa123
 -- Bảng quyền
 CREATE TABLE tblRoles (
     iRoleID_PK TINYINT PRIMARY KEY,       -- Mã quyền (PK)
     sRoleName NVARCHAR(50) UNIQUE NOT NULL -- Tên quyền (Admin, User, ...)
 );
+--thêm cột đã xóa
+ALTER TABLE tblRoles
+ADD Deleted BIT DEFAULT 0 NOT NULL;
+
+
 
 -- Bảng người dùng (tách quyền ra bảng riêng và thêm cột cập nhật)
 CREATE TABLE tblUsers (
@@ -18,7 +24,7 @@ CREATE TABLE tblUsers (
     sEmail VARCHAR(100) UNIQUE NOT NULL,       -- Email
     fBalance DECIMAL(15,2) DEFAULT 0,          -- Số dư ví
     sPasswordHash VARCHAR(255) NOT NULL,       -- Mật khẩu đã mã hóa
-    sPinCode VARCHAR(255) NOT NULL,              -- Mã PIN
+    sPinCode VARCHAR(6) NOT NULL,              -- Mã PIN
     iRoleID_FK TINYINT NOT NULL,               -- Mã quyền (FK)
     dCreatedAt DATETIME DEFAULT GETDATE(),     -- Ngày tạo tài khoản
     dUpdatedAt DATETIME DEFAULT GETDATE(),     -- Thời gian cập nhật thông tin
@@ -33,6 +39,11 @@ CREATE TABLE tblBanks (
     sBankName NVARCHAR(100) UNIQUE NOT NULL,      -- Tên ngân hàng
     sImage VARCHAR(255) NULL                      -- Ảnh logo ngân hàng (có thể NULL)
 );
+--thêm cột đã xóa
+ALTER TABLE tblBanks
+ADD Deleted BIT DEFAULT 0 NOT NULL;
+
+
 
 -- Bảng tài khoản ngân hàng
 CREATE TABLE tblBankAccounts (
@@ -45,6 +56,10 @@ CREATE TABLE tblBankAccounts (
     CONSTRAINT FK_tblBankAccounts_User FOREIGN KEY (iUserID_FK) REFERENCES tblUsers(iUserID_PK),
     CONSTRAINT FK_tblBankAccounts_Bank FOREIGN KEY (sBankID_FK) REFERENCES tblBanks(sBankID_PK)
 );
+--thêm cột đã xóa
+ALTER TABLE tblBankAccounts
+ADD Deleted BIT DEFAULT 0 NOT NULL;
+
 
 -- Bảng giao dịch
 CREATE TABLE tblTransactions (
@@ -63,7 +78,9 @@ CREATE TABLE tblTransactions (
     CONSTRAINT FK_tblTransactions_Bank FOREIGN KEY (iBankAccountID_FK) REFERENCES tblBankAccounts(iAccountID_PK)
 );
 
-
+--thêm cột đã xóa
+ALTER TABLE tblTransactions
+ADD Deleted BIT DEFAULT 0 NOT NULL;
 
 
 

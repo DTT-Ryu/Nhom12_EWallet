@@ -25,6 +25,8 @@ public partial class TblBank
     [Unicode(false)]
     public string? SImage { get; set; }
 
+    public bool Deleted { get; set; }
+
     [InverseProperty("SBankIdFkNavigation")]
     public virtual ICollection<TblBankAccount> TblBankAccounts { get; set; } = new List<TblBankAccount>();
 }

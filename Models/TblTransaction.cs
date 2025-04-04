@@ -40,6 +40,8 @@ public partial class TblTransaction
     [StringLength(10)]
     public string? SStatus { get; set; }
 
+    public bool Deleted { get; set; }
+
     [ForeignKey("IBankAccountIdFk")]
     [InverseProperty("TblTransactions")]
     public virtual TblBankAccount? IBankAccountIdFkNavigation { get; set; }

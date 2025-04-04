@@ -38,8 +38,8 @@ namespace Nhom12_EWallet.ViewModels
 
         //Mã PIN
         [Required(ErrorMessage = "Mã PIN không được để trống.")]
-        //[RegularExpression(@"^\d{6}$", ErrorMessage = "Mã pin phải có 6 số.")]
-        //[DataType (DataType.Password)]
+        [RegularExpression(@"^\d{6}$", ErrorMessage = "Mã pin phải có 6 số.")]
+        [DataType (DataType.Password)]
         [Display(Name = "Mã PIN")]
         public string PinCode { get; set; }
 
@@ -51,7 +51,7 @@ namespace Nhom12_EWallet.ViewModels
         [MinLength(8, ErrorMessage = "Mật khẩu phải có ít nhất 8 ký tự.")]
         [RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$",
             ErrorMessage = "Mật khẩu phải có chữ hoa, chữ thường, số và ký tự đặc biệt.")]
-        //[DataType(DataType.Password)]
+        [DataType(DataType.Password)]
         [Display(Name = "Mật khẩu")]
         public string Password { get; set; }
 
@@ -59,7 +59,7 @@ namespace Nhom12_EWallet.ViewModels
         //Nhập lại mật khẩu
         [Required(ErrorMessage = "Mật khẩu nhập lại không được để trống.")]
         [Compare("Password", ErrorMessage = "Mật khẩu nhập lại không khớp.")]
-        //[DataType(DataType.Password)]
+        [DataType(DataType.Password)]
         [Display(Name = "Nhập lại mật khẩu")]
         public string ConfirmPassword { get; set; }
 
@@ -77,7 +77,7 @@ namespace Nhom12_EWallet.ViewModels
 
         //Mật khẩu
         [Required(ErrorMessage = "Mật khẩu không được để trống.")]
-        //[DataType(DataType.Password)]
+        [DataType(DataType.Password)]
         [Display(Name = "Mật khẩu")]
         public string Password { get; set; }
 

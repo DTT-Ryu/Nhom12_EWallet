@@ -18,6 +18,8 @@ public partial class TblRole
     [StringLength(50)]
     public string SRoleName { get; set; } = null!;
 
+    public bool Deleted { get; set; }
+
     [InverseProperty("IRoleIdFkNavigation")]
     public virtual ICollection<TblUser> TblUsers { get; set; } = new List<TblUser>();
 }
