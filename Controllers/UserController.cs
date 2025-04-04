@@ -48,7 +48,7 @@ namespace Nhom12_EWallet.Controllers
             // Điều hướng theo quyền
             if (user.IRoleIdFk == 1)
             {
-                return RedirectToAction("Index", "BankManagement", new { area = "Admin" });
+                return RedirectToAction("Index", "UserManagement", new { area = "Admin" });
             }
             else if (user.IRoleIdFk == 2)
             {
@@ -132,7 +132,7 @@ namespace Nhom12_EWallet.Controllers
                 DUpdatedAt = null,
             };
 
-            _userRepository.AddUser(newUser);
+            _userRepository.Add(newUser);
             return RedirectToAction("Login", "User");
 
         }

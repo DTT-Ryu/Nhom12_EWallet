@@ -2,6 +2,7 @@
 
 namespace Nhom12_EWallet.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class BankAccountManagementController : Controller
     {
         public IActionResult Index()

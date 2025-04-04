@@ -2,10 +2,10 @@
 
 namespace Nhom12_EWallet.Respositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : Repository<TblUser>, IUserRepository
     {
         private readonly ApplicationDbContext _context;
-        public UserRepository(ApplicationDbContext context)
+        public UserRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
@@ -23,10 +23,10 @@ namespace Nhom12_EWallet.Respositories
         {
             return _context.TblUsers.FirstOrDefault(u => u.SEmail == sEmail);
         }
-        public void AddUser(TblUser user)
-        {
-            _context.TblUsers.Add(user); //Thêm người dùng vào DbSet
-            _context.SaveChanges(); //Lưu vào db
-        }
+        //public void AddUser(TblUser user)
+        //{
+        //    _context.TblUsers.Add(user); //Thêm người dùng vào DbSet
+        //    _context.SaveChanges(); //Lưu vào db
+        //}
     }
 }
