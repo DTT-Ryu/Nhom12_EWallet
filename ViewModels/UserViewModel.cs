@@ -83,6 +83,19 @@ namespace Nhom12_EWallet.ViewModels
 
     }
 
+    public class UserManagementVM
+    {
+        public int id { get; set; }
+        public string fullName { get; set; }
+        public string phoneNumber {  get; set; }
+        public string cccd { get; set; }
+        public string email { get; set; }
+        public decimal balance { get; set; }
+        public string role {  get; set; }
+        public string status { get; set; }
+        
+    }
+
     public class AgeValidationAttribute : ValidationAttribute
     {
         private readonly int _minAge;

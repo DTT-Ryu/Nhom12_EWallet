@@ -11,5 +11,7 @@ namespace Nhom12_EWallet.Service.Interfaces
         Task Logout(HttpContext httpContext);
 
         Task<ResultService> Register(RegisterVM model);
+
+        Task<IEnumerable<UserManagementVM>> GetAllUsers();
     }
 }

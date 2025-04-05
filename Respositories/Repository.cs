@@ -20,6 +20,10 @@ namespace Nhom12_EWallet.Respositories
             return _dbSet.ToList();
         }
 
+        //public async Task<IQueryable<T>> GetAll()
+        //{
+        //    return _dbSet.AsQueryable();
+        //}
         public async Task<T> GetById(int id)
         {
             return _dbSet.Find(id);

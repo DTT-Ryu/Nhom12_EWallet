@@ -98,5 +98,11 @@ namespace Nhom12_EWallet.Service
             result.Success = true;
             return result;
         }
+
+
+        public async Task<IEnumerable<UserManagementVM>> GetAllUsers()
+        {
+            return await _userRepository.GetAllUsersWithRoleAsync();
+        }
     }
 }

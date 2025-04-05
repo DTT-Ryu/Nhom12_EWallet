@@ -1,4 +1,5 @@
 ﻿using Nhom12_EWallet.Models;
+using Nhom12_EWallet.ViewModels;
 
 namespace Nhom12_EWallet.Respositories.Interfaces
 {
@@ -9,5 +10,7 @@ namespace Nhom12_EWallet.Respositories.Interfaces
 
         Task<TblUser>? GetUserByEmail(string sEmail);
         //void AddUser(TblUser user);
+
+        Task<List<UserManagementVM>> GetAllUsersWithRoleAsync();
     }
 }

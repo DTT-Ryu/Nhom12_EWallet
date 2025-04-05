@@ -8,11 +8,10 @@ namespace Nhom12_EWallet.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IUserRepository _userRepository;
+        //private readonly IUserRepository _userRepository;
         private readonly IUserService _userService;
-        public UserController(IUserRepository userRepository, IUserService userService)
+        public UserController(IUserService userService)
         {
-            _userRepository = userRepository;
             _userService = userService;
         }
 

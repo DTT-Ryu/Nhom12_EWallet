@@ -1,69 +1,68 @@
-﻿@{
+﻿@using Nhom12_EWallet.ViewModels
+@model IEnumerable<Nhom12_EWallet.ViewModels.UserManagementVM>
+@{
     ViewData["Title"] = "Quản lý người dùng";
 }
+<h2 class="text-center">Quản lý người dùng</h2>
 
-<div class="container my-5">
-            <div class="table-responsive">
-                <table class="text-center table table-hover table-striped align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Họ tên</th>
-                            <th>SĐT</th>
-                            <th>CCCD</th>
-                            <th>Email</th>
-                            <th>Số dư</th>
-                            <th>Vai trò</th>
-                            <th>Trạng thái</th>
-                            <th>Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Dương thị Thương Dương thị Thương Dương thị Thương</td>
-                            <td>0123456789</td>
-                            <td>012345678999</td>
-                            <td>thuong@gmail.com</td>
-                            <td>1000</td>
-                            <td>user</td>
-                            <td>active</td>
-                            <td>edit/lock</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Dương thị Thương</td>
-                            <td>0123456789</td>
-                            <td>012345678999 012345678999</td>
-                            <td>thuong@gmail.com</td>
-                            <td>1000</td>
-                            <td>user</td>
-                            <td>active</td>
-                            <td>edit/lock</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Dương thị Thương</td>
-                            <td>0123456789</td>
-                            <td>012345678999</td>
-                            <td>thuong@gmail.com thuong@gmail.com</td>
-                            <td>1000</td>
-                            <td>user</td>
-                            <td>active</td>
-                            <td>edit/lock</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Dương thị Thương</td>
-                            <td>0123456789</td>
-                            <td>012345678999</td>
-                            <td>thuong@gmail.com</td>
-                            <td>1000</td>
-                            <td>user</td>
-                            <td>active</td>
-                            <td>edit/lock</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+<div class="container my-3">
+    <div class="table-responsive">
+        <table class="text-center table table-hover table-striped align-middle text-nowrap">
+            <thead class="table-dark">
+                <tr>
+                    <th class="py-3">ID</th>
+                    <th class="py-3">Họ tên</th>
+                    <th class="py-3">SĐT</th>
+                    <th class="py-3">CCCD</th>
+                    <th class="py-3">Email</th>
+                    <th class="py-3">Số dư</th>
+                    <th class="py-3">Vai trò</th>
+                    <th class="py-3">Trạng thái</th>
+                    <th class="py-3">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var u in Model){
+                    <tr>
+                        <td>@u.id</td>
+                        <td>@u.fullName</td>
+                        <td>@u.phoneNumber</td>
+                        <td>@u.cccd</td>
+                        <td>@u.email</td>
+                        <td>@u.balance VNĐ</td>
+                        <td>
+                            @if(u.role == "User"){
+                                <span>Người dùng</span>
+                            }else{
+                                <span class="fw-bold text-danger">@u.role</span>
+                            }
+                            
+                        </td>
+                        <td>
+                            <span class="badge @(u.status == "Hoạt động" ? "bg-success" : "bg-danger")">@u.status</span>
+
+                        </td>
+                        <td>
+                            @if(u.status == "Hoạt động"){
+                                <button class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="Sửa">
+                                    <i class="fas fa-user-edit"></i>
+                                </button>
+                                <button class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Khóa">
+                                    <i class="fas fa-user-lock"></i>
+                                </button>
+                            }else{
+                                <button class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" disabled>
+                                    <i class="fas fa-user-edit"></i>
+                                </button>
+                                <button class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Mở khóa">
+                                    <i class="fas fa-lock-open"></i>
+                                </button>
+                            }
+                                    
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>

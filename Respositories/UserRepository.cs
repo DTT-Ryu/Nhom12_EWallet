@@ -1,5 +1,7 @@
-﻿using Nhom12_EWallet.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Nhom12_EWallet.Models;
 using Nhom12_EWallet.Respositories.Interfaces;
+using Nhom12_EWallet.ViewModels;
 
 namespace Nhom12_EWallet.Respositories
 {
@@ -29,5 +31,23 @@ namespace Nhom12_EWallet.Respositories
         //    _context.TblUsers.Add(user); //Thêm người dùng vào DbSet
         //    _context.SaveChanges(); //Lưu vào db
         //}
+
+        public async Task<List<UserManagementVM>> GetAllUsersWithRoleAsync()
+        {
+            return await _context.TblUsers
+                .Include(u => u.IRoleIdFkNavigation) // Lấy dữ liệu từ bảng Role
+                .Select(u => new UserManagementVM
+                {
+                    id = u.IUserIdPk,
+                    fullName = u.SFullName,
+                    phoneNumber = u.SPhoneNumber,
+                    cccd = u.SCccd,
+                    email = u.SEmail,
+                    balance = u.FBalance ?? 0,
+                    role = u.IRoleIdFkNavigation != null ? u.IRoleIdFkNavigation.SRoleName : "Chưa xác định",
+                    status = u.SStatus == "active" ? "Hoạt động" : "Khóa"
+                })
+                .ToListAsync();
+        }
     }
 }
