@@ -1,0 +1,85 @@
+﻿@model List<Nhom12_EWallet.Models.TblBankAccount>
+
+@{
+    ViewData["Title"] = "Nạp tiền";
+}
+
+<h2>Nạp tiền</h2>
+
+@if (ViewBag.HasBankAccounts)
+{
+    <div class="row">
+        <div class="col-md-4">
+            <form id="depositForm">
+                <div class="form-group">
+                    <label for="bankAccountId">Tài khoản ngân hàng</label>
+                    <select class="form-control" id="bankAccountId" name="BankAccountId" required>
+                        <option value="">-- Chọn tài khoản ngân hàng --</option>
+                        @foreach (var bankAccount in Model)
+                        {
+                            <option value="@bankAccount.IBankAccountIdPk">
+                                @bankAccount.SBankIdFk - @bankAccount.SAccountNumber (@bankAccount.Bank.SBankName)
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="amount">Số tiền</label>
+                    <input type="number" class="form-control" id="amount" name="Amount" required min="1" step="0.01" />
+                </div>
+                <div class="form-group">
+                    <label for="pinCode">Mã PIN</label>
+                    <input type="password" class="form-control" id="pinCode" name="PinCode" required />
+                </div>
+                <div class="form-group">
+                    <label for="description">Mô tả</label>
+                    <input type="text" class="form-control" id="description" name="Description" />
+                </div>
+                <button type="submit" class="btn btn-primary">Nạp tiền</button>
+            </form>
+            <div id="depositMessage" class="mt-2"></div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">
+        Bạn chưa liên kết tài khoản ngân hàng nào.
+        <a href="@Url.Action("AddBankAccount", "Transaction")" class="btn btn-primary mt-2">Thêm tài khoản ngân hàng</a>
+    </div>
+}
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#depositForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var formData = {
+                    BankAccountId: parseInt($('#bankAccountId').val()),
+                    Amount: parseFloat($('#amount').val()),
+                    PinCode: $('#pinCode').val(),
+                    Description: $('#description').val()
+                };
+
+                $.ajax({
+                    url: '@Url.Action("Deposit", "Transaction")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            $('#depositMessage').html('<div class="alert alert-danger">' + response.message + '</div>');
+                        }
+                    },
+                    error: function () {
+                        $('#depositMessage').html('<div class="alert alert-danger">Đã có lỗi xảy ra. Vui lòng thử lại.</div>');
+                    }
+                });
+            });
+        });
+    </script>
+}

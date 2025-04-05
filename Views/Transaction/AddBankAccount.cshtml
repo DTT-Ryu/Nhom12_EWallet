@@ -1,0 +1,63 @@
+﻿@model List<Nhom12_EWallet.Models.TblBank>
+
+@{
+    ViewData["Title"] = "Thêm tài khoản ngân hàng";
+}
+
+<h2>Thêm tài khoản ngân hàng</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form id="addBankAccountForm">
+            <div class="form-group">
+                <label for="bankId">Ngân hàng</label>
+                <select class="form-control" id="bankId" name="BankId" required>
+                    <option value="">-- Chọn ngân hàng --</option>
+                    @foreach (var bank in Model)
+                    {
+                        <option value="@bank.SBankIdPk">@bank.SBankName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="accountNumber">Số tài khoản</label>
+                <input type="text" class="form-control" id="accountNumber" name="AccountNumber" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Thêm tài khoản</button>
+        </form>
+        <div id="addBankAccountMessage" class="mt-2"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#addBankAccountForm').on('submit', function (e) {
+                e.preventDefault();
+
+                var formData = {
+                    BankId: $('#bankId').val(),
+                    AccountNumber: $('#accountNumber').val()
+                };
+
+                $.ajax({
+                    url: '@Url.Action("AddBankAccount", "Transaction")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            $('#addBankAccountMessage').html('<div class="alert alert-danger">' + response.message + '</div>');
+                        }
+                    },
+                    error: function () {
+                        $('#addBankAccountMessage').html('<div class="alert alert-danger">Đã có lỗi xảy ra. Vui lòng thử lại.</div>');
+                    }
+                });
+            });
+        });
+    </script>
+}
