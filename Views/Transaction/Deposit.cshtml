@@ -6,8 +6,8 @@
 
 <h2>Nạp tiền</h2>
 
-@if (ViewBag.HasBankAccounts)
-{
+@* @if (ViewBag.HasBankAccounts) *@
+@* { *@
     <div class="row">
         <div class="col-md-4">
             <form id="depositForm">
@@ -15,12 +15,12 @@
                     <label for="bankAccountId">Tài khoản ngân hàng</label>
                     <select class="form-control" id="bankAccountId" name="BankAccountId" required>
                         <option value="">-- Chọn tài khoản ngân hàng --</option>
-                        @foreach (var bankAccount in Model)
-                        {
-                            <option value="@bankAccount.IBankAccountIdPk">
-                                @bankAccount.SBankIdFk - @bankAccount.SAccountNumber (@bankAccount.Bank.SBankName)
-                            </option>
-                        }
+                        @* @foreach (var bankAccount in Model) *@
+                        @* { *@
+                        @*     <option value="@bankAccount.IBankAccountIdPk"> *@
+                        @*         @bankAccount.SBankIdFk - @bankAccount.SAccountNumber (@bankAccount.Bank.SBankName) *@
+                        @*     </option> *@
+                        @* } *@
                     </select>
                 </div>
                 <div class="form-group">
@@ -40,12 +40,12 @@
             <div id="depositMessage" class="mt-2"></div>
         </div>
     </div>
-}
+@* }  *@
 else
 {
     <div class="alert alert-warning">
         Bạn chưa liên kết tài khoản ngân hàng nào.
-        <a href="@Url.Action("AddBankAccount", "Transaction")" class="btn btn-primary mt-2">Thêm tài khoản ngân hàng</a>
+        <a asp-action="CreateBankAccount" asp-controller="BankAccount" class="btn btn-primary mt-2">Thêm tài khoản ngân hàng</a>
     </div>
 }
 

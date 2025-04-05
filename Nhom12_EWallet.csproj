@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Service\NewFolder\**" />
+    <Content Remove="Service\NewFolder\**" />
+    <EmbeddedResource Remove="Service\NewFolder\**" />
+    <None Remove="Service\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Views\Shared\_Sidebar.cshtml" />
     <Content Remove="Views\Shared\_Sidebar2.cshtml" />
   </ItemGroup>
@@ -20,10 +27,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Service\NewFolder\" />
   </ItemGroup>
 
 </Project>

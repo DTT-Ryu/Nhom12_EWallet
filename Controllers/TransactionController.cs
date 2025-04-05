@@ -7,88 +7,94 @@ namespace Nhom12_EWallet.Controllers
 {
     public class TransactionController : Controller
     {
-        private readonly ITransactionService _walletService;
-
-        public TransactionController(ITransactionService walletService)
-        {
-            _walletService = walletService;
-        }
-
-        private int? GetCurrentUserId()
-        {
-            return HttpContext.Session.GetInt32("UserId");
-        }
-
-        private IActionResult RedirectIfNotLoggedIn()
-        {
-            if (!GetCurrentUserId().HasValue)
-            {
-                return RedirectToAction("Login", "User");
-            }
-            return null;
-        }
-
         [HttpGet]
         public async Task<IActionResult> Deposit()
         {
-            var userId = GetCurrentUserId();
-            if (!userId.HasValue)
-            {
-                return RedirectToAction("Login", "User");
-            }
-
-            var bankAccounts = await _walletService.GetUserBankAccountsAsync(userId.Value);
-            ViewBag.HasBankAccounts = bankAccounts.Any();
-            return View(bankAccounts);
+            return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Deposit(DepositVM model)
-        {
-            var userId = GetCurrentUserId();
-            if (!userId.HasValue)
-            {
-                return Json(new { success = false, message = "Vui lòng đăng nhập." });
-            }
+        //private readonly ITransactionService _walletService;
 
-            var (success, errorMessage) = await _walletService.DepositAsync(userId.Value, model);
-            if (!success)
-            {
-                return Json(new { success = false, message = errorMessage });
-            }
+        //public TransactionController(ITransactionService walletService)
+        //{
+        //    _walletService = walletService;
+        //}
 
-            return Json(new { success = true, redirectUrl = Url.Action("TransactionHistory", "Transaction") });
-        }
+        //private int? GetCurrentUserId()
+        //{
+        //    return HttpContext.Session.GetInt32("UserId");
+        //}
 
-        [HttpGet]
-        public async Task<IActionResult> AddBankAccount()
-        {
-            var userId = GetCurrentUserId();
-            if (!userId.HasValue)
-            {
-                return RedirectToAction("Login", "User");
-            }
+        //private IActionResult RedirectIfNotLoggedIn()
+        //{
+        //    if (!GetCurrentUserId().HasValue)
+        //    {
+        //        return RedirectToAction("Login", "User");
+        //    }
+        //    return null;
+        //}
 
-            var banks = await _walletService.GetAllBanksAsync();
-            return View(banks);
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> Deposit()
+        //{
+        //    var userId = GetCurrentUserId();
+        //    if (!userId.HasValue)
+        //    {
+        //        return RedirectToAction("Login", "User");
+        //    }
 
-        [HttpPost]
-        public async Task<IActionResult> AddBankAccount(AddBankAccountVM model)
-        {
-            var userId = GetCurrentUserId();
-            if (!userId.HasValue)
-            {
-                return Json(new { success = false, message = "Vui lòng đăng nhập." });
-            }
+        //    var bankAccounts = await _walletService.GetUserBankAccountsAsync(userId.Value);
+        //    ViewBag.HasBankAccounts = bankAccounts.Any();
+        //    return View(bankAccounts);
+        //}
 
-            var (success, errorMessage) = await _walletService.AddBankAccountAsync(userId.Value, model);
-            if (!success)
-            {
-                return Json(new { success = false, message = errorMessage });
-            }
+        //[HttpPost]
+        //public async Task<IActionResult> Deposit(DepositVM model)
+        //{
+        //    var userId = GetCurrentUserId();
+        //    if (!userId.HasValue)
+        //    {
+        //        return Json(new { success = false, message = "Vui lòng đăng nhập." });
+        //    }
 
-            return Json(new { success = true, redirectUrl = Url.Action("Deposit", "Transaction") });
-        }
+        //    var (success, errorMessage) = await _walletService.DepositAsync(userId.Value, model);
+        //    if (!success)
+        //    {
+        //        return Json(new { success = false, message = errorMessage });
+        //    }
+
+        //    return Json(new { success = true, redirectUrl = Url.Action("TransactionHistory", "Transaction") });
+        //}
+
+        //[HttpGet]
+        //public async Task<IActionResult> AddBankAccount()
+        //{
+        //    var userId = GetCurrentUserId();
+        //    if (!userId.HasValue)
+        //    {
+        //        return RedirectToAction("Login", "User");
+        //    }
+
+        //    var banks = await _walletService.GetAllBanksAsync();
+        //    return View(banks);
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> AddBankAccount(AddBankAccountVM model)
+        //{
+        //    var userId = GetCurrentUserId();
+        //    if (!userId.HasValue)
+        //    {
+        //        return Json(new { success = false, message = "Vui lòng đăng nhập." });
+        //    }
+
+        //    var (success, errorMessage) = await _walletService.AddBankAccountAsync(userId.Value, model);
+        //    if (!success)
+        //    {
+        //        return Json(new { success = false, message = errorMessage });
+        //    }
+
+        //    return Json(new { success = true, redirectUrl = Url.Action("Deposit", "Transaction") });
+        //}
     }
 }

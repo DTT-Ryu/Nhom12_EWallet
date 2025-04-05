@@ -11,17 +11,17 @@ namespace Nhom12_EWallet.Respositories
         {
             _context = context;
         }
-        public async Task<TblBankAccount> GetBankAccountByIdAsync(int bankAccountId)
-        {
-            return await _context.TblBankAccounts
-                .Include(ba => ba.Bank)
-                .FirstOrDefaultAsync(ba => ba.IBankAccountIdPk == bankAccountId);
-        }
+        //public async Task<TblBankAccount> GetBankAccountByIdAsync(int bankAccountId)
+        //{
+        //    return await _context.TblBankAccounts
+        //        .Include(ba => ba.IAccountIdPk)
+        //        .FirstOrDefaultAsync(ba => ba.IBankAccountIdPk == bankAccountId);
+        //}
 
         public async Task<List<TblBankAccount>> GetBankAccountsByUserIdAsync(int userId)
         {
             return await _context.TblBankAccounts
-                .Include(ba => ba.Bank)
+                .Include(ba => ba.IAccountIdPk)
                 .Where(ba => ba.IUserIdFk == userId && ba.SStatus == "active")
                 .ToListAsync();
         }
@@ -32,10 +32,5 @@ namespace Nhom12_EWallet.Respositories
                 .FirstOrDefaultAsync(ba => ba.SAccountNumber == accountNumber);
         }
 
-        public async Task AddBankAccountAsync(TblBankAccount bankAccount)
-        {
-            await _context.TblBankAccounts.AddAsync(bankAccount);
-            await _context.SaveChangesAsync();
-        }
     }
 }

@@ -7,10 +7,10 @@ namespace Nhom12_EWallet.Service.Interfaces
     {
         public interface IDepositService
         {
-            Task<(bool Success, string ErrorMessage)> DepositAsync(int userId, DepositVM model);
-            Task<List<TblBankAccount>> GetUserBankAccountsAsync(int userId);
-            Task<List<TblBank>> GetAllBanksAsync();
-            Task<(bool Success, string ErrorMessage)> AddBankAccountAsync(int userId, AddBankAccountVM model);
+            //Task<(bool Success, string ErrorMessage)> DepositAsync(int userId, DepositVM model);
+            //Task<List<TblBankAccount>> GetUserBankAccountsAsync(int userId);
+            //Task<List<TblBank>> GetAllBanksAsync();
+            //Task<(bool Success, string ErrorMessage)> AddBankAccountAsync(int userId, AddBankAccountVM model);
         }
     }
 }
