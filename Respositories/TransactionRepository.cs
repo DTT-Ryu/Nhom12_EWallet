@@ -10,5 +10,10 @@ namespace Nhom12_EWallet.Respositories
         {
             _context = context;
         }
+        public async Task AddTransactionAsync(TblTransaction transaction)
+        {
+            await _context.TblTransactions.AddAsync(transaction);
+            await _context.SaveChangesAsync();
+        }
     }
 }
