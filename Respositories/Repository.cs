@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nhom12_EWallet.Models;
+using Nhom12_EWallet.Respositories.Interfaces;
 
 namespace Nhom12_EWallet.Respositories
 {
@@ -14,19 +15,30 @@ namespace Nhom12_EWallet.Respositories
             _dbSet = _context.Set<T>();
         }
 
-        public void Add(T entity) {
+        public async Task<IEnumerable<T>> GetAll()
+        {
+            return _dbSet.ToList();
+        }
+
+        public async Task<T> GetById(int id)
+        {
+            return _dbSet.Find(id);
+        }
+
+
+        public async Task Add(T entity) {
             _dbSet.Add(entity);
             _context.SaveChanges();
         }
 
-        public void Update(T entity)
+        public async Task Update(T entity)
         {
             _dbSet.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var entity = _dbSet.Find(id);
             if(entity != null)
@@ -36,15 +48,6 @@ namespace Nhom12_EWallet.Respositories
             }
         }
 
-        public T GetById(int id)
-        {
-            return _dbSet.Find(id);
-        }
-
-        public IEnumerable<T> GetAll()
-        {
-            return _dbSet.ToList();
-        }
     }
   
 }

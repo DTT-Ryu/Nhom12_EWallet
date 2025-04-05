@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nhom12_EWallet.Models;
 using Nhom12_EWallet.Respositories;
+using Nhom12_EWallet.Respositories.Interfaces;
+using Nhom12_EWallet.Service;
+using Nhom12_EWallet.Service.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,15 +20,21 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ??
     throw new InvalidOperationException("Không tìm thấy chuỗi kết nối 'ApplicationDbContext'")));
 
-//Repository
+//Đăng ký Repository
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IBankAccountRepository, BankAccountRepository>();
+builder.Services.AddScoped<IBankRepository, BankRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();    
 
+//Đăng ký service
+builder.Services.AddScoped<IUserService, UserService>();
 
 //Session
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(5); //Hết hạn sau 5 phút
+    options.IdleTimeout = TimeSpan.FromMinutes(15); //Hết hạn sau 5 phút
     options.Cookie.HttpOnly = true; //chỉ truy cập bằng http, không thể truy cập bằng js (bảo mật)
     options.Cookie.IsEssential = true; //Cookie cần thiết để Session hoạt động
 });

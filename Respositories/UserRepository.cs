@@ -1,4 +1,5 @@
 ﻿using Nhom12_EWallet.Models;
+using Nhom12_EWallet.Respositories.Interfaces;
 
 namespace Nhom12_EWallet.Respositories
 {
@@ -9,17 +10,17 @@ namespace Nhom12_EWallet.Respositories
         {
             _context = context;
         }
-        public TblUser? GetUserByPhoneNumber(string pNumber)
+        public async Task<TblUser>? GetUserByPhoneNumber(string pNumber)
         {
             return _context.TblUsers.FirstOrDefault(u => u.SPhoneNumber == pNumber);
         }
 
-        public TblUser? GetUserByCCCD(string sCCCD)
+        public async Task<TblUser>? GetUserByCCCD(string sCCCD)
         {
             return _context.TblUsers.FirstOrDefault(u => u.SCccd == sCCCD);
         }
 
-        public TblUser? GetUserByEmail(string sEmail)
+        public async Task<TblUser> GetUserByEmail(string sEmail)
         {
             return _context.TblUsers.FirstOrDefault(u => u.SEmail == sEmail);
         }

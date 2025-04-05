@@ -77,7 +77,7 @@ namespace Nhom12_EWallet.ViewModels
 
         //Mật khẩu
         [Required(ErrorMessage = "Mật khẩu không được để trống.")]
-        [DataType(DataType.Password)]
+        //[DataType(DataType.Password)]
         [Display(Name = "Mật khẩu")]
         public string Password { get; set; }
 
