@@ -12,5 +12,11 @@ namespace Nhom12_EWallet.Respositories.Interfaces
         //void AddUser(TblUser user);
 
         Task<List<UserManagementVM>> GetAllUsersWithRoleAsync();
+
+        Task<TblUser>? GetUserWithRoleById(int id);
+        Task<List<TblRole>> GetAllRolesAsync();
+
+        Task<bool> UpdateUserRole (int userId, byte roleId);
+        Task<bool> UpdateUserStatus(int userId);
     }
 }

@@ -44,10 +44,54 @@ namespace Nhom12_EWallet.Respositories
                     cccd = u.SCccd,
                     email = u.SEmail,
                     balance = u.FBalance ?? 0,
+                    roleId = u.IRoleIdFk,
                     role = u.IRoleIdFkNavigation != null ? u.IRoleIdFkNavigation.SRoleName : "Chưa xác định",
-                    status = u.SStatus == "active" ? "Hoạt động" : "Khóa"
+                    status = u.SStatus
+                    //status = u.SStatus == "active" ? "Hoạt động" : "Khóa"
                 })
                 .ToListAsync();
+        }
+
+        public async Task<TblUser> GetUserWithRoleById(int id)
+        {
+            return await _context.TblUsers
+                                 .Include(u => u.IRoleIdFkNavigation) // Bao gồm thông tin Role
+                                 .FirstOrDefaultAsync(u => u.IUserIdPk == id); // So sánh trực tiếp với khóa ngoại
+        }
+
+
+
+        public async Task<List<TblRole>> GetAllRolesAsync()
+        {
+            return await _context.TblRoles.ToListAsync();
+        }
+
+        public async Task<bool> UpdateUserRole(int userId, byte roleId)
+        {
+            var user = await _context.TblUsers.FirstOrDefaultAsync(u => u.IUserIdPk == userId);
+            if (user == null) return false;
+            
+            user.IRoleIdFk = roleId;
+            await _context.SaveChangesAsync();
+            return true;
+            
+        }
+
+        public async Task<bool> UpdateUserStatus(int userid)
+        {
+            var user =await _context.TblUsers.FirstOrDefaultAsync(u => u.IUserIdPk == userid);
+            if (user == null) return false;
+
+            if(user.SStatus == "active")
+            {
+                user.SStatus = "blocked";
+            }
+            else
+            {
+                user.SStatus = "active";
+            }
+            await _context.SaveChangesAsync();
+            return true;
         }
     }
 }

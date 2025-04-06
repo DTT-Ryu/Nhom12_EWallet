@@ -1,1 +1,59 @@
-﻿<h1>Danh sách tài khoản ngân hàng</h1>
+﻿@using Nhom12_EWallet.ViewModels
+@* @model IEnumerable<Nhom12_EWallet.ViewModels.UserManagementVM> *@
+@{
+    ViewData["Title"] = "Quản lý tài khoản ngân hàng";
+}
+<h2 class="text-center">Quản lý tài khoản ngân hàng</h2>
+
+<div class="container my-3">
+    <div class="table-responsive">
+        <table class="text-center table table-hover table-striped align-middle text-nowrap">
+            <thead class="table-dark">
+                <tr>
+                    <th class="py-3">ID</th>
+                    <th class="py-3">Họ tên</th>
+                    <th class="py-3">Số điện thoại</th>
+                    <th class="py-3">Ngân hàng</th>
+                    <th class="py-3">Số tài khoản</th>
+                    <th class="py-3">Trạng thái</th>
+                    <th class="py-3">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Dương Thị Thương</td>
+                        <td>0383866715</td>
+                        <td>Vietcombank</td>
+                        <td>0123456</td>
+                        <td>Hoạt động</td>
+                        <td>
+                            <button data-id="" class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="">
+                                <i class="fas fa-user-edit"></i>
+                            </button>
+                            <button data-id="" class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Khóa">
+                                <i class="fas fa-user-lock"></i>
+                            </button>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>Dương Thị Thương</td>
+                    <td>0383866715</td>
+                    <td>Vietcombank</td>
+                    <td>0123456</td>
+                    <td>Hoạt động</td>
+                    <td>
+                        <button data-id="" class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="">
+                            <i class="fas fa-user-edit"></i>
+                        </button>
+                        <button data-id="" class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Khóa">
+                            <i class="fas fa-user-lock"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

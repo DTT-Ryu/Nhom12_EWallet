@@ -1,5 +1,68 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using Nhom12_EWallet.ViewModels
+@* @model IEnumerable<Nhom12_EWallet.ViewModels.UserManagementVM> *@
 @{
+    ViewData["Title"] = "Quản lý giao dịch";
 }
+<h2 class="text-center">Quản lý giao dịch</h2>
+
+<div class="container my-3">
+    <div class="table-responsive">
+        <table class="text-center table table-hover table-striped align-middle text-nowrap">
+            <thead class="table-dark">
+                <tr>
+                    <th class="py-3">ID</th>
+                    <th class="py-3">Loại giao dịch</th>
+                    <th class="py-3">TK gửi</th>
+                    <th class="py-3">TK nhận</th>
+                    <th class="py-3">Số tiền</th>
+                    <th class="py-3">Nội dung</th>
+                    <th class="py-3">Thời gian</th>
+                    <th class="py-3">Trạng thái</th>
+                    <th class="py-3">Deleted</th>
+                    <th class="py-3">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Nạp tiền</td>
+                    <td>0123456789</td>
+                    <td>0321654987</td>
+                    <td>50000 VNĐ</td>
+                    <td>Dương thị thương chuyển tiền ăn trưa</td>
+                    <td>17:30 25/03/2025</td>
+                    <td>Hoàn thành</td>
+                    <td>Xóa</td>
+                    <td>
+                        <button data-id="" class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="">
+                            <i class="fas fa-user-edit"></i>
+                        </button>
+                        <button data-id="" class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Khóa">
+                            <i class="fas fa-user-lock"></i>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>1</td>
+                    <td>Nạp tiền</td>
+                    <td>0123456789</td>
+                    <td>0321654987</td>
+                    <td>50000 VNĐ</td>
+                    <td>Dương thị thương chuyển tiền ăn trưa</td>
+                    <td>17:30 25/03/2025</td>
+                    <td>Hoàn thành</td>
+                    <td>Xóa</td>
+                    <td>
+                        <button data-id="" class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="">
+                            <i class="fas fa-user-edit"></i>
+                        </button>
+                        <button data-id="" class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Khóa">
+                            <i class="fas fa-user-lock"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -13,5 +13,11 @@ namespace Nhom12_EWallet.Service.Interfaces
         Task<ResultService> Register(RegisterVM model);
 
         Task<IEnumerable<UserManagementVM>> GetAllUsers();
+
+        Task<UserManagementVM> GetUserByID(int id);
+        Task<List<TblRole>> GetListRole();
+        Task<bool> UpdateUserRole(int userId, byte roleId);
+
+        Task<bool> UpdateUserStatus(int userId);
     }
 }

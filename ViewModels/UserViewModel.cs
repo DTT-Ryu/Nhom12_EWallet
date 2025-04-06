@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Nhom12_EWallet.Models;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 namespace Nhom12_EWallet.ViewModels
@@ -91,8 +92,10 @@ namespace Nhom12_EWallet.ViewModels
         public string cccd { get; set; }
         public string email { get; set; }
         public decimal balance { get; set; }
+        public byte roleId { get; set; }
         public string role {  get; set; }
         public string status { get; set; }
+        //public List<TblRole> roles { get; set; }
         
     }
 

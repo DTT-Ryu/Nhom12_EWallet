@@ -104,5 +104,42 @@ namespace Nhom12_EWallet.Service
         {
             return await _userRepository.GetAllUsersWithRoleAsync();
         }
+
+        public async Task<UserManagementVM> GetUserByID(int id)
+        {
+            var u = await _userRepository.GetUserWithRoleById(id);
+            if (u == null) return null;
+
+            var model = new UserManagementVM
+            {
+                id = u.IUserIdPk,
+                fullName = u.SFullName,
+                phoneNumber = u.SPhoneNumber,
+                cccd = u.SCccd,
+                email = u.SEmail,
+                balance = u.FBalance ?? 0,
+                roleId = u.IRoleIdFk,
+                role = u.IRoleIdFkNavigation != null ? u.IRoleIdFkNavigation.SRoleName : "Chưa xác định",
+                status = u.SStatus
+            };
+
+            return model;
+        }
+
+        public async Task<List<TblRole>> GetListRole()
+        {
+            return await _userRepository.GetAllRolesAsync();
+        }
+
+        public async Task<bool> UpdateUserRole (int userId, byte roleId)
+        {
+            bool result = await _userRepository.UpdateUserRole(userId, roleId);
+            return result;
+        }
+
+        public async Task<bool> UpdateUserStatus(int userId)
+        {
+            return await _userRepository.UpdateUserStatus(userId);
+        }
     }
 }

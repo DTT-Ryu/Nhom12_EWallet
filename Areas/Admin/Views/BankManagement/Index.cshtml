@@ -1,5 +1,53 @@
-﻿@{
-    ViewData["Title"] = "Quản lý Ngân hàng";
+﻿@using Nhom12_EWallet.ViewModels
+@* @model IEnumerable<Nhom12_EWallet.ViewModels.UserManagementVM> *@
+@{
+    ViewData["Title"] = "Quản lý ngân hàng";
 }
-<h2>Danh sách ngân hàng</h2>
-<p>Đây là trang quản lý ngân hàng của Admin.</p>
+<h2 class="text-center">Quản lý ngân hàng</h2>
+
+<div class="container my-3">
+    <div class="table-responsive">
+        <table class="text-center table table-hover table-striped align-middle text-nowrap">
+            <thead class="table-dark">
+                <tr>
+                    <th class="py-3">ID</th>
+                    <th class="py-3">Tên</th>
+                    <th class="py-3">Ảnh</th>
+                    <th class="py-3">Trạng thái</th>
+                    <th class="py-3">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>VCB</td>
+                    <td>Vietcombank (Ngân hàng Ngoại thương Việt Nam)</td>
+                    <td><img src="~/images/logo.png" height="50"/></td>
+                    <td>Hoạt động</td>
+                    <td>
+                        <button data-id="" class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="">
+                            <i class="fas fa-user-edit"></i>
+                        </button>
+                        <button data-id="" class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Khóa">
+                            <i class="fas fa-user-lock"></i>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>VCB</td>
+                    <td>Vietcombank (Ngân hàng Ngoại thương Việt Nam)</td>
+                    <td><img src="~/images/logo.png" height="50"/></td>
+                    <td>Hoạt động</td>
+                    <td>
+                        <button data-id="" class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="">
+                            <i class="fas fa-user-edit"></i>
+                        </button>
+                        <button data-id="" class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Khóa">
+                            <i class="fas fa-user-lock"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

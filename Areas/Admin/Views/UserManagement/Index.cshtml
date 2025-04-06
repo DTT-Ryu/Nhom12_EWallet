@@ -5,10 +5,38 @@
 }
 <h2 class="text-center">Quản lý người dùng</h2>
 
+
 <div class="container my-3">
+    <!-- Hiển thị thông báo thành công nếu có SuccessMessage trong TempData -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>@TempData["SuccessMessage"]</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Hiển thị thông báo lỗi nếu có ErrorMessage trong TempData -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong> @TempData["ErrorMessage"]</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="d-flex align-items-center">
+        <!-- Biểu tượng người dùng -->
+        <i class="fa-solid fa-users-viewfinder"></i>
+
+        <p class="mb-0 ms-2">
+            <span class="fs-5">Tổng số người dùng:</span>
+            <span class="fw-bold fs-5 text-danger">@Model.Count()</span>
+        </p>
+    </div>
+
     <div class="table-responsive">
         <table class="text-center table table-hover table-striped align-middle text-nowrap">
-            <thead class="table-dark">
+            <thead class="bg-secondary text-white">
                 <tr>
                     <th class="py-3">ID</th>
                     <th class="py-3">Họ tên</th>
@@ -31,30 +59,35 @@
                         <td>@u.email</td>
                         <td>@u.balance VNĐ</td>
                         <td>
-                            @if(u.role == "User"){
-                                <span>Người dùng</span>
-                            }else{
+                            @if(u.role == "Admin"){
                                 <span class="fw-bold text-danger">@u.role</span>
+                            }else{
+                                <span class="">@u.role</span>
                             }
                             
                         </td>
                         <td>
-                            <span class="badge @(u.status == "Hoạt động" ? "bg-success" : "bg-danger")">@u.status</span>
+                            @if(u.status == "active"){
+                                <span class="badge bg-success">Hoạt động</span>
+                            }else{
+                                <span class="badge bg-danger">Khóa</span>
+                            }
+                            
 
                         </td>
                         <td>
-                            @if(u.status == "Hoạt động"){
-                                <button class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="Sửa">
+                            @if(u.status == "active"){
+                                <button data-id="@u.id" class="btnEditUser btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#modalEditUser" title="Cập nhật quyền">
                                     <i class="fas fa-user-edit"></i>
                                 </button>
-                                <button class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Khóa">
+                                <button data-id="@u.id" class="btnBlockUser btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modalBlockUser" title="Khóa">
                                     <i class="fas fa-user-lock"></i>
                                 </button>
                             }else{
                                 <button class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" disabled>
                                     <i class="fas fa-user-edit"></i>
                                 </button>
-                                <button class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Mở khóa">
+                                <button data-id="@u.id" class="btnBlockUser btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modalBlockUser" title="Mở khóa">
                                     <i class="fas fa-lock-open"></i>
                                 </button>
                             }
@@ -66,3 +99,127 @@
         </table>
     </div>
 </div>
+
+@* modal sửa *@
+<div class="modal fade" id="modalEditUser" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content ps-3 pe-3">
+            <div class="modal-header">
+                <h4>Cập nhật quyền người dùng</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form  class="pt-0 row g-2" id="frmEditUser" method="post" asp-action="EditRole" asp-controller="UserManagement">
+                <div class="modal-body pb-0">
+                
+                    <div class="row mb-2" hidden>
+                        <label class="form-label ps-0 mb-0" for="editUserID">ID</label>
+                        <input type="text" id="editUserID" class="form-control" placeholder="" name="id" value="1">
+                    </div>
+                    <div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="editUserName">Họ và tên</label>
+                        <input type="text" id="editUserName" class="form-control" placeholder="" name="fullname" value="1" disabled>
+                    </div>
+                    <div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="editUserPhoneNumber">Số điện thoại</label>
+                        <input type="text" id="editUserPhoneNumber" class="form-control" placeholder="" name="editUserPhoneNumber" value="1" disabled>
+                    </div>
+                    <div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="editUserCCCD">Căn cước công dân</label>
+                        <input type="text" id="editUserCCCD" class="form-control" placeholder="" name="editUserCCCD" value="1" disabled>
+                    </div>
+                    <div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="editUserEmail">Email</label>
+                        <input type="text" id="editUserEmail" class="form-control" placeholder="" name="editUserEmail" value="1" disabled>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col px-0 me-2">
+                            <div class="d-flex justify-content-between">
+                                <label class="form-label ps-0 mb-0" for="editUserBalance">Số dư</label>
+                            </div>
+                            <input type="text" id="editUserBalance" class="form-control" placeholder="" name="editUserBalance" value="1" disabled>
+                        </div>
+                        <div class="col px-0">
+                            <div class="d-flex justify-content-between">
+                                <label class="form-label ps-0 mb-0 fw-bold" for="editUserSelectRole">Quyền</label>
+                            </div>
+                            <select id="editUserSelectRole" name="roleId" class="form-control form-select"></select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="btnSaveEditUser" class="btn btn-dark" style="margin-left: 10px;">Cập nhật</button>
+
+                        <button type="reset" class="btn btn-outline-dark" data-bs-dismiss="modal">Đóng</button>
+
+
+                    </div>
+                
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@* modal khóa *@
+<div class="modal fade" id="modalBlockUser" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content ps-3 pe-3">
+            <div class="modal-header">
+                <h4 id="modalTitleBlockUser">Xác nhận khóa người dùng?</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form class="pt-0 row g-2" id="frmEditUser" method="post" asp-action="EditStatus" asp-controller="UserManagement">
+                <div class="modal-body pb-0">
+
+                    <div class="row mb-2" hidden>
+                        <label class="form-label ps-0 mb-0" for="blockUserID">ID</label>
+                        <input type="text" id="blockUserID" class="form-control" placeholder="" name="id" value="1">
+                    </div>
+                    <div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="blockUserName">Họ và tên</label>
+                        <input type="text" id="blockUserName" class="form-control" placeholder="" name="fullname" value="1" disabled>
+                    </div>
+                    <div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="blockUserPhoneNumber">Số điện thoại</label>
+                        <input type="text" id="blockUserPhoneNumber" class="form-control" placeholder="" name="blockUserPhoneNumber" value="1" disabled>
+                    </div>
+                    <div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="blockUserCCCD">Căn cước công dân</label>
+                        <input type="text" id="blockUserCCCD" class="form-control" placeholder="" name="blockUserCCCD" value="1" disabled>
+                    </div>
+                    <div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="blockUserEmail">Email</label>
+                        <input type="text" id="blockUserEmail" class="form-control" placeholder="" name="blockUserEmail" value="1" disabled>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col px-0 me-2">
+                            <div class="d-flex justify-content-between">
+                                <label class="form-label ps-0 mb-0" for="blockUserBalance">Số dư</label>
+                            </div>
+                            <input type="text" id="blockUserBalance" class="form-control" placeholder="" name="blockUserBalance" value="1" disabled>
+                        </div>
+                        <div class="col px-0">
+                            <div class="d-flex justify-content-between">
+                                <label class="form-label ps-0 mb-0" for="blockUserSelectRole">Quyền</label>
+                            </div>
+                            <select id="blockUserSelectRole" name="roleId" class="form-control form-select" disabled></select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="btnSaveBlockUser" class="btn btn-danger" style="margin-left: 10px;">Khóa</button>
+
+                        <button type="reset" class="btn btn-outline-dark" data-bs-dismiss="modal">Đóng</button>
+
+
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+    <script src="~/js/userManagement.js"></script>
+}

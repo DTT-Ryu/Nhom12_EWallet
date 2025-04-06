@@ -5,7 +5,7 @@
     bool isLoggedIn = userRole.HasValue && !string.IsNullOrEmpty(userName);
 }
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-image py-3">
+<nav class="navbar navbar-expand-lg navbar-dark bg-image">
     <div class="container-fluid px-4">
         <a class="navbar-brand d-flex align-items-center mb-1" href="/">
             <img src="~/images/logo2.png" height="50" alt="E-Wallet Logo" loading="lazy">
@@ -16,7 +16,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarMenu">
-            <ul class="navbar-nav me-auto ms-5">
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item"><a class="nav-link text-white" asp-action="Index" asp-controller="Home" ><i class="bi bi-house-door me-2"></i>Trang chủ</a></li>
 
                 @if (isLoggedIn)
