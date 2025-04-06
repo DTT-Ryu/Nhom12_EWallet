@@ -44,10 +44,6 @@ Nhấn `Ctrl + F5` để chạy dự án hoặc sử dụng lệnh:
 dotnet run
 ```
 
-## Tài khoản mẫu
-- **User**: `updating`
-- **Admin**: updating
-
 ## Chức năng chính
 - **User**: Đăng ký, đăng nhập, xem lịch sử giao dịch, nạp/rút/chuyển tiền, chỉnh sửa thông tin cá nhân.
 - **Admin**: Quản lý người dùng, ngân hàng, tài khoản ngân hàng, giao dịch + Đăng ký, đăng nhập, xem lịch sử giao dịch, nạp/rút/chuyển tiền, chỉnh sửa thông tin cá nhân.
