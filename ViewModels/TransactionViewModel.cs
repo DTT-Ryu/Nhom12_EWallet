@@ -21,5 +21,24 @@
             public string PinCode { get; set; } // Mã PIN
             public string Description { get; set; } // Mô tả giao dịch
         }
+
+        
+    }
+    public class TransactionManagementVM
+    {
+        public int TransactionId { get; set; }
+        public int SenderUserId { get; set; }
+        public string? SenderUserPhone { get; set; }
+        public string TransactionType { get; set; }
+        public decimal Amount { get; set; }
+        public DateTime? CreateAt { get; set; }
+        public string? Description { get; set; }
+        public int? RecipientUserId { get; set; }
+        public string? RecipientUserPhone { get; set; }
+        public string? BankId { get; set; }
+        public string? BankAccName { get; set; }
+        public string Status { get; set; }
+        public bool Deleted { get; set; }
+
     }
 }

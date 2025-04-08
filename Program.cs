@@ -30,6 +30,9 @@ builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 
 //Đăng ký service
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IBankService, BankService>();
+builder.Services.AddScoped<IBankAccountService, BankAccountService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 //Session
 builder.Services.AddSession(options =>

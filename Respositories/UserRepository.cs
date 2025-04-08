@@ -52,7 +52,7 @@ namespace Nhom12_EWallet.Respositories
                 .ToListAsync();
         }
 
-        public async Task<TblUser> GetUserWithRoleById(int id)
+        public async Task<TblUser?> GetUserWithRoleById(int id)
         {
             return await _context.TblUsers
                                  .Include(u => u.IRoleIdFkNavigation) // Bao gồm thông tin Role
@@ -81,7 +81,7 @@ namespace Nhom12_EWallet.Respositories
         {
             var user =await _context.TblUsers.FirstOrDefaultAsync(u => u.IUserIdPk == userid);
             if (user == null) return false;
-
+            
             if(user.SStatus == "active")
             {
                 user.SStatus = "blocked";

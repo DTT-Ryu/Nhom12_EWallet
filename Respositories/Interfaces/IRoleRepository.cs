@@ -1,6 +1,9 @@
-﻿namespace Nhom12_EWallet.Respositories.Interfaces
+﻿using Nhom12_EWallet.Models;
+
+namespace Nhom12_EWallet.Respositories.Interfaces
 {
-    public interface IRoleRepository
+    public interface IRoleRepository : IRepository<TblRole>
     {
+
     }
 }
