@@ -106,7 +106,7 @@
             <form class="pt-0 row g-2" id="frmDeleteTransaction" method="post" asp-action="Delete" asp-controller="TransactionManagement">
                 <div class="modal-body pb-0">
 
-                    <div class="row mb-2">
+                    <div class="row mb-2" hidden>
                         <label class="form-label ps-0 mb-0" for="deleteTransactionID">ID</label>
                         <input type="text" id="deleteTransactionID" class="form-control" placeholder="" name="TransactionId" readonly>
                     </div>
@@ -150,5 +150,5 @@
 
 
 @section Scripts{
-    <script src="~/js/transactionManagement.js"></script>
+    <script src="~/js/TransactionManagement.js"></script>
 }
