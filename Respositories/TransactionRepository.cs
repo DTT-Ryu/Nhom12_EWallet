@@ -29,8 +29,8 @@ namespace Nhom12_EWallet.Respositories
         {
             return await _context.TblTransactions
                         .Include(u => u.ISenderUserIdFkNavigation)
-                        .Include(u=>u.IRecipientUserIdFkNavigation)
-                        .Include(u=>u.IBankAccountIdFkNavigation)
+                        .Include(u => u.IRecipientUserIdFkNavigation)
+                        .Include(u => u.IBankAccountIdFkNavigation)
                         .FirstOrDefaultAsync(u => u.ITransactionIdPk == id);
         }
     }
