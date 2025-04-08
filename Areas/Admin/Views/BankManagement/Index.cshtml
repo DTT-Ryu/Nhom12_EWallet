@@ -1,14 +1,47 @@
 ﻿@using Nhom12_EWallet.ViewModels
-@* @model IEnumerable<Nhom12_EWallet.ViewModels.UserManagementVM> *@
+@model List<Nhom12_EWallet.Models.TblBank>
 @{
     ViewData["Title"] = "Quản lý ngân hàng";
 }
 <h2 class="text-center">Quản lý ngân hàng</h2>
 
 <div class="container my-3">
+    <!-- Hiển thị thông báo thành công nếu có SuccessMessage trong TempData -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>@TempData["SuccessMessage"]</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Hiển thị thông báo lỗi nếu có ErrorMessage trong TempData -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong> @TempData["ErrorMessage"]</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <!-- Tổng số ngân hàng -->
+        <div class="d-flex align-items-center">
+            <i class="fa-solid fa-users-viewfinder"></i>
+            <p class="mb-0 ms-2">
+                <span class="fs-5">Tổng số ngân hàng:</span>
+                <span class="fw-bold fs-5 text-danger">@Model.Count()</span>
+            </p>
+        </div>
+
+        <!-- Nút Thêm với biểu tượng add -->
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCreateBank">
+            <i class="fas fa-plus"></i> Thêm ngân hàng
+        </button>
+    </div>
+
     <div class="table-responsive">
         <table class="text-center table table-hover table-striped align-middle text-nowrap">
-            <thead class="table-dark">
+            <thead class="bg-secondary text-white">
                 <tr>
                     <th class="py-3">ID</th>
                     <th class="py-3">Tên</th>
@@ -18,36 +51,171 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>VCB</td>
-                    <td>Vietcombank (Ngân hàng Ngoại thương Việt Nam)</td>
-                    <td><img src="~/images/logo.png" height="50"/></td>
-                    <td>Hoạt động</td>
-                    <td>
-                        <button data-id="" class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="">
-                            <i class="fas fa-user-edit"></i>
-                        </button>
-                        <button data-id="" class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Khóa">
-                            <i class="fas fa-user-lock"></i>
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>VCB</td>
-                    <td>Vietcombank (Ngân hàng Ngoại thương Việt Nam)</td>
-                    <td><img src="~/images/logo.png" height="50"/></td>
-                    <td>Hoạt động</td>
-                    <td>
-                        <button data-id="" class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="">
-                            <i class="fas fa-user-edit"></i>
-                        </button>
-                        <button data-id="" class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Khóa">
-                            <i class="fas fa-user-lock"></i>
-                        </button>
-                    </td>
-                </tr>
+                @foreach(var b in Model){
+                    <tr>
+                        <td>@b.SBankIdPk</td>
+                        <td>@b.SBankName</td>
+                        <td><img src="~/images/bank/@b.SImage" height="50" /></td>
+                        <td>
+                            @if(!b.Deleted){
+                                <span class="badge bg-success">Mở</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Khóa</span>
+                            }
+                        </td>
+                        <td>
+                            @if (!b.Deleted)
+                            {
+                                <button data-id="@b.SBankIdPk" class="btnEditBank btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#modalEditBank" title="Cập nhật">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button data-id="@b.SBankIdPk" class="btnLockBank btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modalLockBank" title="Khóa">
+                                    <i class="fa-solid fa-lock"></i>
+                                </button>
+                            }
+                            else
+                            {
+                                <button disabled data-id="" class=" btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button data-id="@b.SBankIdPk" class="btnLockBank btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modalLockBank" title="Khóa">
+                                    <i class="fa-solid fa-lock-open"></i>
+                                </button>
+                            }
+                            
+                        </td>
+                    </tr>
+                }
+                
             </tbody>
         </table>
     </div>
 </div>
+
+@* modal thêm *@
+<div class="modal fade" id="modalCreateBank" tabindex="-1" style="display: none" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content px-3">
+            <div class="modal-header">
+                <h4>Thêm ngân hàng</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="frmCreateBank" class="pt-0 row g-2" method="post" asp-action="Create" asp-controller="BankManagement" data-val="true" enctype="multipart/form-data">
+                <div class="modal-body pb-0">
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="createBankId">Mã ngân hàng</label>
+                        <input class="form-control" type="search" id="createBankId" name="SBankIdPk" placeholder="Nhập mã ngân hàng" />
+                        <span  class="text-danger mt-1" id="createBankIdError"></span>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="createBankName">Tên ngân hàng</label>
+                        <input class="form-control" type="search" id="createBankName" name="SBankName" placeholder="Nhập tên ngân hàng" />
+                        <span  class="text-danger mt-1" id="createBankNameError"></span>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="createBankImg">Ảnh</label>
+                        <input class="form-control" type="file" id="createBankImg" name="ImageFile" accept="image/*" />
+                        <span  class="text-danger mt-1" id="createBankImgError"></span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark">Tạo</button>
+                    <button type="reset" class="btn btn-outline-dark" data-bs-dismiss="modal">Hủy</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@* modal sửa *@
+<div class="modal fade" id="modalEditBank" tabindex="-1" style="display: none" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content px-3">
+            <div class="modal-header">
+                <h4>Cập nhật thông tin ngân hàng</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="frmEditBank" class="pt-0 row g-2" method="post" asp-action="EditInfor" asp-controller="BankManagement" data-val="true" enctype="multipart/form-data">
+                <div class="modal-body pb-0">
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="editBankId">Mã ngân hàng</label>
+                        <input class="form-control" type="search" id="editBankId" name="SBankIdPk" placeholder="Nhập mã ngân hàng" readonly />
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="editBankName">Tên ngân hàng</label>
+                        <input class="form-control" type="search" id="editBankName" name="SBankName" placeholder="Nhập tên ngân hàng" />
+                        <span class="text-danger mt-1" id="editBankNameError"></span>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0 fw-bold text-center" for="editBankImg">Ảnh hiện tại</label>
+                        <img id="editImg" style="max-width: 200px;" class="d-block mx-auto" />
+
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="editBankImg">Ảnh</label>
+                        <input class="form-control" type="file" id="editBankImg" name="ImageFile" accept="image/*" />
+                        <span class="text-danger mt-1" id="editBankImgError"></span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark">Cập nhật</button>
+                    <button type="reset" class="btn btn-outline-dark" data-bs-dismiss="modal">Hủy</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@* modal khóa *@
+<div class="modal fade" id="modalLockBank" tabindex="-1" style="display: none" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content px-3">
+            <div class="modal-header">
+                <h4 id="modalLockTitle">Khóa ngân hàng</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="frmLockBank" class="pt-0 row g-2" method="post" asp-action="Lock" asp-controller="BankManagement" data-val="true" enctype="multipart/form-data">
+                <div class="modal-body pb-0">
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="lockBankId">Mã ngân hàng</label>
+                        <input class="form-control" type="search" id="lockBankId" name="SBankIdPk" placeholder="Nhập mã ngân hàng" readonly />
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="lockBankName">Tên ngân hàng</label>
+                        <input class="form-control" type="search" id="lockBankName" name="SBankName" placeholder="Nhập tên ngân hàng" readonly />
+                        <span class="text-danger mt-1" id="lockBankNameError"></span>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0 fw-bold text-center" for="lockBankImg">Ảnh hiện tại</label>
+                        <img id="lockImg" style="max-width: 200px;" class="d-block mx-auto" />
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" id="btnSaveLockBank" class="btn btn-dark">Khóa</button>
+                    <button type="reset" class="btn btn-outline-dark" data-bs-dismiss="modal">Hủy</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+  <script src="~/js/bankManagement.js"></script>
+}
+
+
+
+
+
+
+

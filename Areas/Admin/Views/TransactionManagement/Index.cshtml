@@ -1,14 +1,39 @@
 ﻿@using Nhom12_EWallet.ViewModels
-@* @model IEnumerable<Nhom12_EWallet.ViewModels.UserManagementVM> *@
+@model IEnumerable<Nhom12_EWallet.ViewModels.TransactionManagementVM>
 @{
     ViewData["Title"] = "Quản lý giao dịch";
 }
 <h2 class="text-center">Quản lý giao dịch</h2>
 
 <div class="container my-3">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>@TempData["SuccessMessage"]</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Hiển thị thông báo lỗi nếu có ErrorMessage trong TempData -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong> @TempData["ErrorMessage"]</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="d-flex align-items-center">
+        <!-- Biểu tượng người dùng -->
+        <i class="fa-solid fa-users-viewfinder"></i>
+
+        <p class="mb-0 ms-2">
+            <span class="fs-5">Tổng số giao dịch:</span>
+            <span class="fw-bold fs-5 text-danger">@Model.Count()</span>
+        </p>
+    </div>
     <div class="table-responsive">
         <table class="text-center table table-hover table-striped align-middle text-nowrap">
-            <thead class="table-dark">
+            <thead class="bg-secondary text-white">
                 <tr>
                     <th class="py-3">ID</th>
                     <th class="py-3">Loại giao dịch</th>
@@ -18,51 +43,112 @@
                     <th class="py-3">Nội dung</th>
                     <th class="py-3">Thời gian</th>
                     <th class="py-3">Trạng thái</th>
-                    <th class="py-3">Deleted</th>
                     <th class="py-3">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Nạp tiền</td>
-                    <td>0123456789</td>
-                    <td>0321654987</td>
-                    <td>50000 VNĐ</td>
-                    <td>Dương thị thương chuyển tiền ăn trưa</td>
-                    <td>17:30 25/03/2025</td>
-                    <td>Hoàn thành</td>
-                    <td>Xóa</td>
-                    <td>
-                        <button data-id="" class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="">
-                            <i class="fas fa-user-edit"></i>
-                        </button>
-                        <button data-id="" class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Khóa">
-                            <i class="fas fa-user-lock"></i>
-                        </button>
-                    </td>
-                </tr>
+                @foreach(var t in Model){
+                    <tr>
+                        <td>@t.TransactionId</td>
+                        <td>
+                            @if (t.TransactionType == "deposit"){
+                                <span class="badge bg-success">Nạp tiền</span>
+                            }
+                            else if (t.TransactionType == "withdraw"){
+                                <span class="badge bg-primary">Rút tiền</span>
+                            }
+                            else if (t.TransactionType == "transfer"){
+                                <span class="badge bg-warning text-black">Chuyển tiền</span>
+                            }
+                        </td>
+                        <td>@t.SenderUserPhone</td>
+                        
+                        <td>
+                            @if(t.TransactionType == "transfer"){
+                                <span>@t.RecipientUserPhone</span>
+                            }else{
+                                <span>@t.BankAccName</span>
+                            }
+                        </td>
+                        <td>@t.Amount VNĐ</td>
+                        <td>@t.Description</td>
+                        <td>@(t.CreateAt.HasValue ? t.CreateAt.Value.ToString("HH:mm:ss dd/MM/yyyy") : "N/A")</td>
 
-                <tr>
-                    <td>1</td>
-                    <td>Nạp tiền</td>
-                    <td>0123456789</td>
-                    <td>0321654987</td>
-                    <td>50000 VNĐ</td>
-                    <td>Dương thị thương chuyển tiền ăn trưa</td>
-                    <td>17:30 25/03/2025</td>
-                    <td>Hoàn thành</td>
-                    <td>Xóa</td>
-                    <td>
-                        <button data-id="" class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="">
-                            <i class="fas fa-user-edit"></i>
-                        </button>
-                        <button data-id="" class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Khóa">
-                            <i class="fas fa-user-lock"></i>
-                        </button>
-                    </td>
-                </tr>
+                        <td>
+                            @if(t.Status == "pending"){
+                                <span class="text-danger fw-bold">Chưa giải quyết</span>
+                            }else if(t.Status == "completed"){
+                                <span class="fw-bold">Hoàn thành</span>
+                            }else{
+                                <span class="text-danger">Thất bại</span>
+                            }
+                        </td>
+                        <td>
+                            <button data-id="@t.TransactionId" class="btnDeleteTransaction btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modalDeleteTransaction" title="Xóa">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
 </div>
+
+@* modal xóa *@
+<div class="modal fade" id="modalDeleteTransaction" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content ps-3 pe-3">
+            <div class="modal-header">
+                <h4 id="">Xác nhận xóa giao dịch này?</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form class="pt-0 row g-2" id="frmDeleteTransaction" method="post" asp-action="Delete" asp-controller="TransactionManagement">
+                <div class="modal-body pb-0">
+
+                    <div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="deleteTransactionID">ID</label>
+                        <input type="text" id="deleteTransactionID" class="form-control" placeholder="" name="TransactionId" readonly>
+                    </div>
+                    <div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="deleteTranType">Loại giao dịch</label>
+                        <input type="text" id="deleteTranType" class="form-control" placeholder="" name="" readonly>
+                    </div>
+                    <div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="deleteTranSender">Tài khoản gửi</label>
+                        <input type="text" id="deleteTranSender" class="form-control" placeholder="" name="" readonly>
+                    </div>
+                    <div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="deleteTranRecipient">Tài khoản nhận</label>
+                        <input type="text" id="deleteTranRecipient" class="form-control" placeholder="" name="" readonly>
+                    </div>
+                    <div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="deleteTranAmount">Số tiền</label>
+                        <input type="text" id="deleteTranAmount" class="form-control" placeholder="" name="" readonly>
+                    </div><div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="deleteTranDescript">Nội dung</label>
+                        <input type="text" id="deleteTranDescript" class="form-control" placeholder="" name="" readonly>
+                    </div><div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="deleteTranCreate">Thời gian</label>
+                        <input type="text" id="deleteTranCreate" class="form-control" placeholder="" name="" readonly>
+                    </div><div class="row mb-2">
+                        <label class="form-label ps-0 mb-0" for="deleteTranStatus">Trạng thái</label>
+                        <input type="text" id="deleteTranStatus" class="form-control" placeholder="" name="" readonly>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="btnConfirmDeleteTran" class="btn btn-danger" style="margin-left: 10px;">Xóa</button>
+                        <button type="reset" class="btn btn-outline-dark" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts{
+    <script src="~/js/transactionManagement.js"></script>
+}

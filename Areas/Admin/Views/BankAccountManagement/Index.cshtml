@@ -1,18 +1,45 @@
 ﻿@using Nhom12_EWallet.ViewModels
-@* @model IEnumerable<Nhom12_EWallet.ViewModels.UserManagementVM> *@
+@model IEnumerable<Nhom12_EWallet.ViewModels.BankAccountManagementVM>
 @{
     ViewData["Title"] = "Quản lý tài khoản ngân hàng";
 }
 <h2 class="text-center">Quản lý tài khoản ngân hàng</h2>
 
 <div class="container my-3">
+    <!-- Hiển thị thông báo thành công nếu có SuccessMessage trong TempData -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>@TempData["SuccessMessage"]</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Hiển thị thông báo lỗi nếu có ErrorMessage trong TempData -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong> @TempData["ErrorMessage"]</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="d-flex align-items-center">
+        <!-- Biểu tượng người dùng -->
+        <i class="fa-solid fa-users-viewfinder"></i>
+
+        <p class="mb-0 ms-2">
+            <span class="fs-5">Tổng số tài khoản:</span>
+            <span class="fw-bold fs-5 text-danger">@Model.Count()</span>
+        </p>
+    </div>
     <div class="table-responsive">
         <table class="text-center table table-hover table-striped align-middle text-nowrap">
-            <thead class="table-dark">
+            <thead class="bg-secondary text-white">
                 <tr>
                     <th class="py-3">ID</th>
                     <th class="py-3">Họ tên</th>
                     <th class="py-3">Số điện thoại</th>
+                    <th class="py-3">Mã ngân hàng</th>
                     <th class="py-3">Ngân hàng</th>
                     <th class="py-3">Số tài khoản</th>
                     <th class="py-3">Trạng thái</th>
@@ -20,40 +47,152 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach(var b in Model){
                     <tr>
-                        <td>1</td>
-                        <td>Dương Thị Thương</td>
-                        <td>0383866715</td>
-                        <td>Vietcombank</td>
-                        <td>0123456</td>
-                        <td>Hoạt động</td>
+                        <td>@b.AccountId</td>
+                        <td>@b.UserName</td>
+                        <td>@b.UserPhoneNumber</td>
+                        <td>@b.BankId</td>
+                        <td>@b.BankName</td>
+                        <td>@b.AccountNumber</td>
                         <td>
-                            <button data-id="" class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="">
-                                <i class="fas fa-user-edit"></i>
-                            </button>
-                            <button data-id="" class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Khóa">
-                                <i class="fas fa-user-lock"></i>
-                            </button>
+                            @if (b.Deleted && b.Status == "blocked")
+                            {
+                                <span class="badge bg-warning text-dark">Đã xóa</span>
+                            }
+                            else if(!b.Deleted)
+                            {
+                                if(b.Status == "active"){
+                                    <span class="badge bg-success">Hoạt động</span>
+                                }else{
+                                    <span class="badge bg-danger">Đã khóa</span>
+                                }
+                                
+                            }
+                        </td>
+                        <td>
+                            @if (b.Deleted && b.Status == "blocked")
+                            {
+                                <button class="btnEditBank btn btn-sm me-2 text-danger"  data-bs-toggle="modal" data-bs-target="" title="">
+                                    <i class="fa-solid fa-ban"></i>
+                                </button>
+
+                            }
+                            else if (!b.Deleted)
+                            {
+                                if (b.Status == "active")
+                                {
+                                    <button data-id="@b.AccountId" class="btnEditBankAcc btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#modalEditBankAcc" title="Cập nhật">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                    <button data-id="@b.AccountId" class="btnLockBankAcc btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modalLockBankAcc" title="Khóa">
+                                        <i class="fa-solid fa-lock"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button disabled data-id="" class=" btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                    <button data-id="@b.AccountId" class="btnLockBankAcc btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modalLockBankAcc" title="Khóa">
+                                        <i class="fa-solid fa-lock-open"></i>
+                                    </button>
+                                }
+
+                            }
+
+
                         </td>
                     </tr>
+                }
 
-                <tr>
-                    <td>2</td>
-                    <td>Dương Thị Thương</td>
-                    <td>0383866715</td>
-                    <td>Vietcombank</td>
-                    <td>0123456</td>
-                    <td>Hoạt động</td>
-                    <td>
-                        <button data-id="" class="suatk btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="" title="">
-                            <i class="fas fa-user-edit"></i>
-                        </button>
-                        <button data-id="" class="Khoatk btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="" title="Khóa">
-                            <i class="fas fa-user-lock"></i>
-                        </button>
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>
 </div>
+
+@* modal sửa *@
+<div class="modal fade" id="modalEditBankAcc" tabindex="-1" style="display: none" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content px-3">
+            <div class="modal-header">
+                <h4>Cập nhật tài khoản ngân hàng</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="frmEditBankAcc" class="pt-0 row g-2" method="post" asp-action="Edit" asp-controller="BankAccountManagement">
+                <div class="modal-body pb-0">
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="editBankAccID">ID</label>
+                        <input class="form-control" type="search" id="editBankAccID" name="AccountId" readonly/>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="editBankAccSelectUser">Người dùng</label>
+                        <select id="editBankAccSelectUser" name="UserId" class="form-control form-select"></select>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="editBankAccSelectBank">Ngân hàng</label>
+                        <select id="editBankAccSelectBank" name="BankId" class="form-control form-select"></select>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="editBankAccNumber">Số tài khoản</label>
+                        <input class="form-control" type="search" id="editBankAccNumber" name="AccountNumber" />
+                        <span class="text-danger mt-1" id="editBankAccNumberError"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark">Cập nhật</button>
+                    <button type="reset" class="btn btn-outline-dark" data-bs-dismiss="modal">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* modal khóa *@
+<div class="modal fade" id="modalLockBankAcc" tabindex="-1" style="display: none" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content px-3">
+            <div class="modal-header">
+                <h4 id="modalLockBankAccTitle">Khóa tài khoản ngân hàng</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="frmLockBankAcc" class="pt-0 row g-2" method="post" asp-action="Lock" asp-controller="BankAccountManagement">
+                <div class="modal-body pb-0">
+                    <div class="row mb-3" hidden>
+                        <label class="form-label ps-0" for="lockBankAccID">ID</label>
+                        <input class="form-control" type="search" id="lockBankAccID" name="AccountId" readonly />
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="lockBankAccName">Họ tên</label>
+                        <input class="form-control" type="search" id="lockBankAccName" name="UserName" readonly />
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="lockBankAccPhone">Số điện thoại</label>
+                        <input class="form-control" type="search" id="lockBankAccPhone" name="UserPhoneNumber" readonly />
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="lockBankAccBankID">Mã ngân hàng</label>
+                        <input class="form-control" type="search" id="lockBankAccBankID" name="BankId" readonly />
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="lockBankAccBankName">Tên ngân hàng</label>
+                        <input class="form-control" type="search" id="lockBankAccBankName" name="BankName" readonly />
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label ps-0" for="lockBankAccNumber">Số tài khoản</label>
+                        <input class="form-control" type="search" id="lockBankAccNumber" name="AccountNumber" readonly />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnSaveLockBankAcc" class="btn btn-dark">Khóa</button>
+                    <button type="reset" class="btn btn-outline-dark" data-bs-dismiss="modal">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/js/bankAccountManagement.js"></script>
+}

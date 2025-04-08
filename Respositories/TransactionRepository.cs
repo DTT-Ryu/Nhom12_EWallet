@@ -1,4 +1,5 @@
-﻿using Nhom12_EWallet.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Nhom12_EWallet.Models;
 using Nhom12_EWallet.Respositories.Interfaces;
 
 namespace Nhom12_EWallet.Respositories
@@ -14,6 +15,23 @@ namespace Nhom12_EWallet.Respositories
         {
             await _context.TblTransactions.AddAsync(transaction);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<TblTransaction>> GetAllTransaction()
+        {
+            return await _context.TblTransactions
+                    .Include(u => u.ISenderUserIdFkNavigation)
+                    .Include(u => u.IRecipientUserIdFkNavigation)
+                    .Include(u => u.IBankAccountIdFkNavigation).ToListAsync();
+        }
+
+        public async Task<TblTransaction?> GetTransactionByID(int id)
+        {
+            return await _context.TblTransactions
+                        .Include(u => u.ISenderUserIdFkNavigation)
+                        .Include(u=>u.IRecipientUserIdFkNavigation)
+                        .Include(u=>u.IBankAccountIdFkNavigation)
+                        .FirstOrDefaultAsync(u => u.ITransactionIdPk == id);
         }
     }
 }

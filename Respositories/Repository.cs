@@ -15,32 +15,30 @@ namespace Nhom12_EWallet.Respositories
             _dbSet = _context.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public async Task<List<T>> GetAll()
         {
-            return _dbSet.ToList();
+            return await _dbSet.ToListAsync();
         }
 
-        //public async Task<IQueryable<T>> GetAll()
-        //{
-        //    return _dbSet.AsQueryable();
-        //}
         public async Task<T> GetById(int id)
         {
-            return _dbSet.Find(id);
+            return await _dbSet.FindAsync(id);
         }
+
 
 
         public async Task Add(T entity) {
             _dbSet.Add(entity);
-            _context.SaveChanges();
+           await _context.SaveChangesAsync();
         }
 
         public async Task Update(T entity)
         {
             _dbSet.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync(); // Thực thi bất đồng bộ
         }
+
 
         public async Task Delete(int id)
         {
@@ -48,7 +46,7 @@ namespace Nhom12_EWallet.Respositories
             if(entity != null)
             {
                 _dbSet.Remove(entity);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
 

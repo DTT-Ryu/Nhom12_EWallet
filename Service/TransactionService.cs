@@ -1,27 +1,31 @@
-﻿using Nhom12_EWallet.Models;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Nhom12_EWallet.Models;
+using Nhom12_EWallet.Respositories;
 using Nhom12_EWallet.Respositories.Interfaces;
 using Nhom12_EWallet.Service.Interfaces;
+using Nhom12_EWallet.ViewModels;
 using static Nhom12_EWallet.Service.TransactionService;
 using static Nhom12_EWallet.ViewModels.TransactionViewModel;
 
 namespace Nhom12_EWallet.Service
 {
-    public class TransactionService
+    public class TransactionService : ITransactionService
     {
-        public class WalletService : ITransactionService
-        {
-            private readonly IUserRepository _userRepository;
-            private readonly IBankAccountRepository _bankAccountRepository;
-            private readonly ITransactionRepository _transactionRepository;
-            private readonly IBankRepository _bankRepository;
 
-            public WalletService(IUserRepository userRepository, IBankAccountRepository bankAccountRepository, ITransactionRepository transactionRepository, IBankRepository bankRepository)
-            {
-                _userRepository = userRepository;
-                _bankAccountRepository = bankAccountRepository;
-                _transactionRepository = transactionRepository;
-                _bankRepository = bankRepository;
-            }
+        private readonly IUserRepository _userRepository;
+        private readonly IBankAccountRepository _bankAccountRepository;
+        private readonly ITransactionRepository _transactionRepository;
+        private readonly IBankRepository _bankRepository;
+        public TransactionService(IUserRepository userRepository, IBankAccountRepository bankAccountRepository, ITransactionRepository transactionRepository, IBankRepository bankRepository)
+        {
+            _userRepository = userRepository;
+            _bankAccountRepository = bankAccountRepository;
+            _transactionRepository = transactionRepository;
+            _bankRepository = bankRepository;
+        }
+        public class WalletService 
+        {
+
 
             //public async Task<(bool Success, string ErrorMessage)> DepositAsync(int userId, DepositVM model)
             //{
@@ -106,6 +110,62 @@ namespace Nhom12_EWallet.Service
             //    return (true, string.Empty);
             //}
         }
+
+        public async Task<List<TransactionManagementVM>> GetAllTransaction()
+        {
+            var transactions = await _transactionRepository.GetAllTransaction();
+            return transactions.Select(t => new TransactionManagementVM
+            {
+                TransactionId = t.ITransactionIdPk,
+                SenderUserId = t.ISenderUserIdFk,
+                SenderUserPhone = t.ISenderUserIdFkNavigation.SPhoneNumber,
+                TransactionType = t.STransactionType,
+                Amount = t.FAmount,
+                CreateAt = t.DCreatedAt,
+                Description = t.SDescription,
+                RecipientUserId = t.IRecipientUserIdFk,
+                RecipientUserPhone = t.IRecipientUserIdFkNavigation?.SPhoneNumber,
+                BankId = t.IBankAccountIdFkNavigation?.SBankIdFk,
+                BankAccName = t.IBankAccountIdFkNavigation?.SAccountNumber,
+                Status = t.SStatus,
+                Deleted = t.Deleted,
+            }).ToList();
+        }
+
+        public async Task<TransactionManagementVM> GetTransactionByID(int id)
+        {
+            var t = await _transactionRepository.GetTransactionByID(id);
+            if (t == null) return null;
+            return new TransactionManagementVM
+            {
+                TransactionId = t.ITransactionIdPk,
+                SenderUserId = t.ISenderUserIdFk,
+                SenderUserPhone = t.ISenderUserIdFkNavigation.SPhoneNumber,
+                TransactionType = t.STransactionType,
+                Amount = t.FAmount,
+                CreateAt = t.DCreatedAt,
+                Description = t.SDescription,
+                RecipientUserId = t.IRecipientUserIdFk,
+                RecipientUserPhone = t.IRecipientUserIdFkNavigation?.SPhoneNumber,
+                BankId = t.IBankAccountIdFkNavigation?.SBankIdFk,
+                BankAccName = t.IBankAccountIdFkNavigation?.SAccountNumber,
+                Status = t.SStatus,
+                Deleted = t.Deleted,
+            };
+        }
+
+        public async Task<bool> DeleteTransaction(int id)
+        {
+            var transaction = await _transactionRepository.GetTransactionByID(id);
+            if (transaction == null)
+            {
+                return false; // Không tìm thấy giao dịch
+            }
+
+            await _transactionRepository.Delete(id);
+            return true;
+        }
+
     }
 }
 

@@ -10,9 +10,11 @@ namespace Nhom12_EWallet.Service
     {
 
         private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IRoleRepository _roleRepository;
+        public UserService(IUserRepository userRepository, IRoleRepository roleRepository)
         {
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
         }
 
         public async Task<TblUser>? Login(string phoneNumber, string password)
@@ -128,7 +130,7 @@ namespace Nhom12_EWallet.Service
 
         public async Task<List<TblRole>> GetListRole()
         {
-            return await _userRepository.GetAllRolesAsync();
+            return await _roleRepository.GetAll();
         }
 
         public async Task<bool> UpdateUserRole (int userId, byte roleId)
