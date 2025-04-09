@@ -16,7 +16,7 @@ namespace Nhom12_EWallet.Areas.Admin.Controllers
             _bankService = bankService;
         }
 
-
+        [HttpGet("/bank-management")]
         public async Task<IActionResult> Index()
         {
             var banks = await _bankService.GetAllBank();
