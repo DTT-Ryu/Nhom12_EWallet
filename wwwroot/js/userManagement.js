@@ -11,6 +11,7 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success) {
                     console.log(response);
+                    //console.log(typeof response.self, response.self);
                     var user = response.model;
                     $("#editUserID").val(user.id);
                     $("#editUserName").val(user.fullName);
@@ -33,6 +34,13 @@ $(document).ready(function () {
                         }
                     });
                     $('#modalEditUser').modal('show');
+                    if (response.self) {
+                        alert("Bạn không thể sửa quyền của chính mình!");
+                        $("#btnSaveEditUser").prop("disabled", true); // Chặn sửa số dư nếu là chính mình
+                    } else {
+                        $("#btnSaveEditUser").prop("disabled", false);
+                    }
+                    
                 } else {
                     alert("Không tìm thấy người dùng!");
                 }
@@ -86,6 +94,12 @@ $(document).ready(function () {
                         }
                     });
                     $('#modalBlockUser').modal('show');
+                    if (response.self) {
+                        alert("Bạn không thể khóa tài khoản của chính mình!");
+                        $("#btnSaveBlockUser").prop("disabled", true); // Chặn sửa số dư nếu là chính mình
+                    } else {
+                        $("#btnSaveBlockUser").prop("disabled", false);
+                    }
                 } else {
                     alert("Không tìm thấy người dùng!");
                 }

@@ -15,6 +15,8 @@ namespace Nhom12_EWallet.Areas.Admin.Controllers
         {
             _userService = userService;
         }
+
+        [HttpGet("/account-management")]
         public async Task<IActionResult> Index()
         {
             var users = await _userService.GetAllUsers();
@@ -24,13 +26,18 @@ namespace Nhom12_EWallet.Areas.Admin.Controllers
         
         public async Task<IActionResult> GetUserByID(int id)
         {
+            var currentUserId = HttpContext.Session.GetInt32("UserId");
             var model = await _userService.GetUserByID(id);
             if (model == null)
             {
                 return Json(new { success = false });
             }
+            if(currentUserId == id)
+            {
+                return Json(new { success = true, model = model, self = true, currentId = currentUserId });
+            }
 
-            return Json(new { success = true, model = model });
+            return Json(new { success = true, model = model, self = false });
         }
 
         [HttpGet]
@@ -58,12 +65,12 @@ namespace Nhom12_EWallet.Areas.Admin.Controllers
             if (result)
             {
                 TempData["UserName"] = user.fullName;  // Lấy fullName từ database
-                TempData["SuccessMessage"] = $"Cập nhật quyền cho {user.fullName} thành công!";
+                TempData["SuccessMessage"] = $"Cập nhật quyền cho người dùng {user.fullName} thành công!";
             }
             else
             {
                 TempData["UserName"] = user.fullName;
-                TempData["ErrorMessage"] = $"Cập nhật quyền cho {user.fullName} thất bại!";
+                TempData["ErrorMessage"] = $"Cập nhật quyền cho người dùng {user.fullName} thất bại!";
             }
 
             return RedirectToAction("Index");

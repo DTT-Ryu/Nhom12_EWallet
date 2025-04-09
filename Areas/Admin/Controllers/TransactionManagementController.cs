@@ -14,6 +14,7 @@ namespace Nhom12_EWallet.Areas.Admin.Controllers
             _transactionService = transactionService;
         }
 
+        [HttpGet("/transaction-management")]
         public async Task<IActionResult> Index()
         {
             var transactions = await _transactionService.GetAllTransaction();

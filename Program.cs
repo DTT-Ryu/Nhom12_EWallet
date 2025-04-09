@@ -41,7 +41,7 @@ builder.Services.AddHttpContextAccessor(); // Truy cập HttpContext.Session
 //Session
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(1); //Hết hạn sau 5 phút
+    options.IdleTimeout = TimeSpan.FromMinutes(15); //Hết hạn sau 5 phút
     options.Cookie.HttpOnly = true; //chỉ truy cập bằng http, không thể truy cập bằng js (bảo mật)
     options.Cookie.IsEssential = true; //Cookie cần thiết để Session hoạt động
 });
