@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Nhom12_EWallet.Controllers;
 using Nhom12_EWallet.Service.Interfaces;
 using Nhom12_EWallet.ViewModels;
 
@@ -7,7 +8,7 @@ namespace Nhom12_EWallet.Areas.Admin.Controllers
 {
     [Area("Admin")]
     //[Authorize(Roles = "Admin")]
-    public class UserManagementController : Controller
+    public class UserManagementController : BaseAdminController
     {
         private readonly IUserService _userService;
         public UserManagementController(IUserService userService)

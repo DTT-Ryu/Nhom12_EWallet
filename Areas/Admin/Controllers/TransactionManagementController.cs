@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Nhom12_EWallet.Controllers;
 using Nhom12_EWallet.Service;
 using Nhom12_EWallet.Service.Interfaces;
 
 namespace Nhom12_EWallet.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class TransactionManagementController : Controller
+    public class TransactionManagementController : BaseAdminController
     {
         private readonly ITransactionService _transactionService;
         public TransactionManagementController(ITransactionService transactionService)

@@ -34,17 +34,17 @@ builder.Services.AddScoped<IBankService, BankService>();
 builder.Services.AddScoped<IBankAccountService, BankAccountService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 
+
+// ✅ Thêm Session vào Services
+builder.Services.AddDistributedMemoryCache(); // Bắt buộc để dùng Session
+builder.Services.AddHttpContextAccessor(); // Truy cập HttpContext.Session
 //Session
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(15); //Hết hạn sau 5 phút
+    options.IdleTimeout = TimeSpan.FromMinutes(1); //Hết hạn sau 5 phút
     options.Cookie.HttpOnly = true; //chỉ truy cập bằng http, không thể truy cập bằng js (bảo mật)
     options.Cookie.IsEssential = true; //Cookie cần thiết để Session hoạt động
 });
-
-//
-builder.Services.AddHttpContextAccessor();
-
 
 
 var app = builder.Build();
@@ -57,13 +57,17 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseSession();
+
 app.UseRouting();
+app.UseSession();
+
 
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
