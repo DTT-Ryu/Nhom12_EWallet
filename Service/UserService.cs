@@ -38,6 +38,9 @@ namespace Nhom12_EWallet.Service
             httpContext.Session.SetInt32("UserId", user.IUserIdPk);
             httpContext.Session.SetString("UserName", user.SFullName);
             httpContext.Session.SetInt32("UserRole", user.IRoleIdFk);
+
+            Console.WriteLine("Session UserId: " + httpContext.Session.GetInt32("UserId"));
+            Console.WriteLine("Session UserName: " + httpContext.Session.GetString("UserName"));
         }
 
         public async Task Logout(HttpContext httpContext)

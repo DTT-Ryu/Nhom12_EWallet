@@ -2,7 +2,7 @@
 
 namespace Nhom12_EWallet.Controllers
 {
-    public class BankAccountController : Controller
+    public class BankAccountController : BaseController
     {
         public IActionResult CreateBankAccount()
         {

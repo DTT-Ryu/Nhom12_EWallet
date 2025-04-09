@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Nhom12_EWallet.Controllers;
 using Nhom12_EWallet.Service.Interfaces;
 using Nhom12_EWallet.ViewModels;
 
 namespace Nhom12_EWallet.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class BankAccountManagementController : Controller
+    public class BankAccountManagementController : BaseAdminController
     {
         private readonly IBankAccountService _bankAccountService;
         public BankAccountManagementController(IBankAccountService bankAccountService)

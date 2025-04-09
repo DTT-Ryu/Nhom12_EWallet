@@ -5,7 +5,7 @@ using static Nhom12_EWallet.ViewModels.TransactionViewModel;
 
 namespace Nhom12_EWallet.Controllers
 {
-    public class TransactionController : Controller
+    public class TransactionController : BaseController
     {
         [HttpGet]
         public async Task<IActionResult> Deposit()

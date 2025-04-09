@@ -39,13 +39,17 @@ namespace Nhom12_EWallet.Controllers
                 }
 
                 _userService.SetUserSession(HttpContext, user);
-
-                return user.IRoleIdFk switch
+                if (!string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
                 {
-                    1 => RedirectToAction("Index", "UserManagement", new { area = "Admin" }),
-                    2 => RedirectToAction("Profile", "User"),
-                    _ => RedirectToAction("Index", "Home")
-                };
+
+                    return user.IRoleIdFk switch
+                    {
+                        1 => RedirectToAction("Index", "UserManagement", new { area = "Admin" }),
+                        2 => RedirectToAction("Profile", "User"),
+                        _ => RedirectToAction("Index", "Home")
+                    };
+                }
+                return View();
             }
             catch (Exception ex)
             {
@@ -91,8 +95,20 @@ namespace Nhom12_EWallet.Controllers
 
         public IActionResult Profile()
         {
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            Console.WriteLine($"Session kiểm tra trong Profile: UserId={userId}");
+
+            if (!userId.HasValue || userId.Value == 0)
+            {
+                TempData["ErrorMessage"] = "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại!";
+                return RedirectToAction("Login");
+            }
+
             return View();
         }
+
+
     }
 }
 
