@@ -19,5 +19,9 @@ namespace Nhom12_EWallet.Service.Interfaces
         Task<bool> UpdateUserRole(int userId, byte roleId);
 
         Task<bool> UpdateUserStatus(int userId);
+
+        Task<bool> GetUserByEmail(string email);
+
+        Task<UserManagementVM> UpdateUserInfor(int id, UserManagementVM model);
     }
 }

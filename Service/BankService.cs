@@ -58,5 +58,7 @@ namespace Nhom12_EWallet.Service
         {
             return await _bankRepository.UpdateBankDeleted(id);
         }
+
+        
     }
 }

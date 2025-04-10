@@ -195,7 +195,7 @@ $(document).ready(function () {
             data: { n : number },
             success: function (response) {
                 if (response.success) {
-                    $('#editBankAccNumberError').text('Số tài khoản đã tồn tại!');
+                    $('#editBankAccNumberError').text('Số6 tài khoản đã tồn tại!');
                 }
             },
             error: function () {

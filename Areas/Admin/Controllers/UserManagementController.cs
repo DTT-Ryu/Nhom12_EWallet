@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Nhom12_EWallet.Controllers;
 using Nhom12_EWallet.Service.Interfaces;
 using Nhom12_EWallet.ViewModels;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace Nhom12_EWallet.Areas.Admin.Controllers
 {
@@ -17,11 +18,39 @@ namespace Nhom12_EWallet.Areas.Admin.Controllers
         }
 
         [HttpGet("/account-management")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string keyword)
         {
             var users = await _userService.GetAllUsers();
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                keyword = keyword.ToLower(); // Chuyển từ khóa về chữ thường
+                users = users.Where(u =>
+                    u.fullName.ToLower().Contains(keyword) ||
+                    u.phoneNumber.Contains(keyword)
+                ).ToList();
+            }
+
             return View(users);
         }
+
+        [HttpGet("/api/users/search")]
+        public async Task<IActionResult> SearchUsers(string keyword)
+        {
+            var users = await _userService.GetAllUsers();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                keyword = keyword.ToLower(); // Chuyển từ khóa về chữ thường
+                users = users.Where(u =>
+                    u.fullName.ToLower().Contains(keyword) ||
+                    u.phoneNumber.Contains(keyword)
+                ).ToList();
+            }
+
+            return Json(users);
+        }
+
+
         [HttpGet]        
         
         public async Task<IActionResult> GetUserByID(int id)
@@ -117,7 +146,13 @@ namespace Nhom12_EWallet.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [HttpGet("/user-detail/{id}")]
+        public async Task<IActionResult> Detail(int id)
+        {
+            var user = await _userService.GetUserByID(id);
+            if (user == null) return NotFound();
+            return View(user);
+        }
 
         //cập nhật quyền với ajax
         //[HttpPost]

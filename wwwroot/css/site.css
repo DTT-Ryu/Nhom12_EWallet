@@ -97,3 +97,41 @@ h3 {
 .navbar-toggler-icon {
     color: black !important;
 }
+
+/*trang profile*/
+.user-about {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.information-change {
+    background-color: #fff;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+    .information-change a {
+        display: block;
+        text-decoration: none;
+        color: black;
+        padding: 30px;
+    }
+
+    .information-change h4 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+.information-set {
+    border-top: 1px solid #e5e5e5;
+}
+
+.information-wrapper {
+    padding: 30px;
+}
+

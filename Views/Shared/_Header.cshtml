@@ -17,14 +17,14 @@
 
         <div class="collapse navbar-collapse" id="navbarMenu">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link text-white" asp-action="Index" asp-controller="Home" ><i class="bi bi-house-door me-2"></i>Trang chủ</a></li>
 
                 @if (isLoggedIn)
                 {
-                    <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-credit-card me-2"></i>Lịch sử giao dịch</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" asp-area="" asp-action="Deposit" asp-controller="Transaction"><i class="bi bi-wallet2 me-2"></i>Nạp tiền</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-arrow-down-circle me-2"></i>Rút tiền</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-send me-2"></i>Chuyển tiền</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-house-door me-2"></i>Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="/transaction-history"><i class="bi bi-credit-card me-2"></i>Lịch sử giao dịch</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="/deposit"><i class="bi bi-wallet2 me-2"></i>Nạp tiền</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="/withdraw"><i class="bi bi-arrow-down-circle me-2"></i>Rút tiền</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="/transfer"><i class="bi bi-send me-2"></i>Chuyển tiền</a></li>
 
                     @if (userRole == 1) // Chỉ hiển thị nếu là Admin
                     {
@@ -33,7 +33,7 @@
                                 <i class="bi bi-gear"></i> Quản trị viên
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/account-management"><i class="bi bi-person-circle me-2"></i>Quản lý tài khoản</a></li>
+                                <li><a class="dropdown-item" href="/account-management"><i class="bi bi-person-circle me-2"></i>Quản lý người dùng</a></li>
                                 <li><a class="dropdown-item" href="/bank-management"><i class="bi bi-bank me-2"></i>Quản lý ngân hàng</a></li>
                                 <li><a class="dropdown-item" href="/bank-account-management"><i class="bi bi-bank me-2"></i>Quản lý tài khoản ngân hàng</a></li>
                                 <li><a class="dropdown-item" href="/transaction-management"><i class="bi bi-cash-stack me-2"></i>Quản lý giao dịch</a></li>
@@ -47,8 +47,9 @@
                 @if (isLoggedIn)
                 {
                     <li class="nav-item me-3">
-                        <span class="nav-link text-white">Xin chào, <strong>@userName</strong>!</span>
+                        <a href="/profile" class="nav-link text-white">Xin chào, <strong>@userName</strong>!</a>
                     </li>
+
                     <li class="nav-item">
                         <a href="/User/Logout" class="btn btn-outline-light"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
                     </li>

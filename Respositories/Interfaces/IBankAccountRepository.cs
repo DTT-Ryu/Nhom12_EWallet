@@ -3,7 +3,7 @@ using Nhom12_EWallet.ViewModels;
 
 namespace Nhom12_EWallet.Respositories.Interfaces
 {
-    public interface IBankAccountRepository
+    public interface IBankAccountRepository : IRepository<TblBankAccount>
     {
         //Task<TblBankAccount> GetBankAccountByIdAsync(int bankAccountId);
         Task<List<TblBankAccount>> GetBankAccountsByUserIdAsync(int userId);

@@ -16,7 +16,7 @@ namespace Nhom12_EWallet.Controllers
         }
 
         
-        [HttpGet]
+        //[HttpGet("/login")]
         public IActionResult Login()
         {
             return View();
@@ -58,6 +58,7 @@ namespace Nhom12_EWallet.Controllers
             }
         }
 
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Logout()
         {
@@ -65,7 +66,7 @@ namespace Nhom12_EWallet.Controllers
             return RedirectToAction("Login", "User");
         }
 
-        [HttpGet]
+        [HttpGet("/register")]
         public IActionResult Register()
         {
             return View();
@@ -93,7 +94,8 @@ namespace Nhom12_EWallet.Controllers
 
         }
 
-        public IActionResult Profile()
+        [HttpGet("/profile")]
+        public async Task<IActionResult> Profile()
         {
             var userId = HttpContext.Session.GetInt32("UserId");
 
@@ -108,7 +110,46 @@ namespace Nhom12_EWallet.Controllers
             return View();
         }
 
+        [HttpGet("/get-user-session")]
+        public async Task<IActionResult> GetUserFromSession()
+        {
+            var userName = HttpContext.Session.GetString("UserName");
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var userRole = HttpContext.Session.GetInt32("UserRole");
 
+            return new JsonResult(new { userName, userId, userRole });
+        }
+
+        [HttpGet("/get-user/{id}")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var user = await _userService.GetUserByID(id);
+            if(user == null)
+            {
+                return NotFound(new { status = 404, message = "Người dùng không tồn tại" });
+            }
+            return Ok(user);
+        }
+
+        [HttpGet("/get-user-email/{email}")]
+        public async Task<IActionResult> ValidateEmail(string email)
+        {
+            var u = await _userService.GetUserByEmail(email);
+            if (u == false ) return new JsonResult(new { success = false, message = "Email đã tồn tại" });
+            return new JsonResult(new { success = true});
+        }
+
+        [HttpPatch("/update-user-infor/{id}")]
+        public async Task<IActionResult> UpdateUserInfor(int id, [FromBody] UserManagementVM vm)
+        {
+            Console.WriteLine("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+            Console.WriteLine($"Received data: id = {id}, fullName = {vm?.fullName}, email = {vm?.email}, birthDate = {vm?.birthDate}");
+
+            var result = await _userService.UpdateUserInfor(id, vm);
+            if(result == null) 
+                return Json(new { success = false, message = "Cập nhật thông tin thất bại!" });
+            return Json(new { success = true, message ="Cập nhật thông tin thành công!", data = result });
+        }
     }
 }
 

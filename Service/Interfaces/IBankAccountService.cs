@@ -13,10 +13,12 @@ namespace Nhom12_EWallet.Service.Interfaces
 
         Task<BankAccountManagementVM?> GetBankAccountByID(int id);
 
-        Task<BankAccountManagementVM?> GetBankAccountByNumber(string number);
+        Task<bool> GetBankAccountByNumber(string number);
 
         Task<bool> UpdateBankAccount(BankAccountManagementVM model);
 
         Task<bool> UpdateBankAccountStatus(int id);
+
+        Task AddBankAcoount(int id, TblBankAccount acc);
     }
 }

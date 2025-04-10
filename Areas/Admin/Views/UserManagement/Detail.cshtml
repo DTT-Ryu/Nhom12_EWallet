@@ -1,0 +1,48 @@
+﻿@model Nhom12_EWallet.ViewModels.UserManagementVM
+@{
+	ViewData["Title"] = "Chi tiết người dùng";
+}
+<div class="container mt-4">
+    <h2 class="mb-4">Chi tiết người dùng</h2>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-2">
+                <label class=" ps-0 mb-0" for="detailUserID">ID</label>
+                <input type="text" id="detailID" class="" placeholder="" name="id" value="@Model.id">
+            </div>
+            <div class="row mb-2">
+                <label class="form-label ps-0 mb-0" for="detailUserName">Họ và tên</label>
+                <input type="text" id="detailUserName" class="" placeholder="" name="fullname" value="@Model.fullName" disabled>
+            </div>
+            <div class="row mb-2">
+                <label class="form-label ps-0 mb-0" for="detailUserPhoneNumber">Số điện thoại</label>
+                <input type="text" id="detailUserPhoneNumber" class="form-control" placeholder="" name="detailUserPhoneNumber" value="@Model.phoneNumber" disabled>
+            </div>
+            <div class="row mb-2">
+                <label class="form-label ps-0 mb-0" for="detailUserCCCD">Căn cước công dân</label>
+                <input type="text" id="detailUserCCCD" class="form-control" placeholder="" name="detailUserCCCD" value="@Model.cccd" disabled>
+            </div>
+            <div class="row mb-2">
+                <label class="form-label ps-0 mb-0" for="detailUserEmail">Email</label>
+                <input type="text" id="detailUserEmail" class="form-control" placeholder="" name="detailUserEmail" value="@Model.email" disabled>
+            </div>
+            <div class="row mb-2">
+                <div class="col px-0 me-2">
+                    <div class="d-flex justify-content-between">
+                        <label class="form-label ps-0 mb-0" for="detailUserBalance">Số dư</label>
+                    </div>
+                    <input type="text" id="detailUserBalance" class="form-control" placeholder="" name="detailUserBalance" value="@Model.balance" disabled>
+                </div>
+                <div class="col px-0">
+                    <div class="d-flex justify-content-between">
+                        <label class="form-label ps-0 mb-0 fw-bold" for="detailUserSelectRole">Quyền</label>
+                    </div>
+                    <input type="text" id="detailUserBalance" class="form-control" placeholder="" name="detailUserBalance" value="@Model.role" disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="/account-management" class="btn btn-secondary mt-3">Quay lại</a>
+</div>

@@ -32,24 +32,11 @@ namespace Nhom12_EWallet.Respositories
         //    _context.SaveChanges(); //Lưu vào db
         //}
 
-        public async Task<List<UserManagementVM>> GetAllUsersWithRoleAsync()
+        public async Task<List<TblUser>> GetAllUsersWithRoleAsync()
         {
             return await _context.TblUsers
-                .Include(u => u.IRoleIdFkNavigation) // Lấy dữ liệu từ bảng Role
-                .Select(u => new UserManagementVM
-                {
-                    id = u.IUserIdPk,
-                    fullName = u.SFullName,
-                    phoneNumber = u.SPhoneNumber,
-                    cccd = u.SCccd,
-                    email = u.SEmail,
-                    balance = u.FBalance ?? 0,
-                    roleId = u.IRoleIdFk,
-                    role = u.IRoleIdFkNavigation != null ? u.IRoleIdFkNavigation.SRoleName : "Chưa xác định",
-                    status = u.SStatus
-                    //status = u.SStatus == "active" ? "Hoạt động" : "Khóa"
-                })
-                .ToListAsync();
+            .Include(u => u.IRoleIdFkNavigation) // Join bảng Role
+            .ToListAsync();
         }
 
         public async Task<TblUser?> GetUserWithRoleById(int id)
@@ -72,6 +59,7 @@ namespace Nhom12_EWallet.Respositories
             if (user == null) return false;
             
             user.IRoleIdFk = roleId;
+            user.DUpdatedAt = DateTime.Now;
             await _context.SaveChangesAsync();
             return true;
             
@@ -90,8 +78,21 @@ namespace Nhom12_EWallet.Respositories
             {
                 user.SStatus = "active";
             }
+            user.DUpdatedAt = DateTime.Now;
             await _context.SaveChangesAsync();
             return true;
         }
+
+        //public async Task<TblUser> UpdateUserInfor(int id, UserManagementVM model)
+        //{
+        //    var user = await _userRepository.GetUserWithRoleById(id);
+
+        //    if (user == null) return null;
+
+        //    user.SFullName = model.fullName;
+        //    user.SEmail = model.email;
+        //    user.DBirthDate = model.birthDate;
+        //    user.DUpdatedAt = DateTime.Now;
+        //}
     }
 }
