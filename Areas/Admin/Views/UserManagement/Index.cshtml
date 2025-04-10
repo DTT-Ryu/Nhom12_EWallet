@@ -3,8 +3,31 @@
 @{
     ViewData["Title"] = "Quản lý người dùng";
 }
+<style>
+    /* Loại bỏ viền xanh khi focus */
+    input:focus, input:active {
+        outline: none !important;
+        box-shadow: none !important;
+        border-color: #ccc !important; /* Đặt màu viền về mặc định */
+    }
+</style>
 <h2 class="text-center">Quản lý người dùng</h2>
 
+<div class="d-flex justify-content-center my-3">
+    <form method="get" action="@Url.Action("Index", "UserManagement")" class="w-50">
+        <div class="input-group">
+            <span class="input-group-text">
+                <i class="fas fa-search"></i>
+            </span>
+            <input type="search" name="keyword" class="form-control"
+                   placeholder="Nhập tên hoặc số điện thoại..."
+                   value="@Context.Request.Query["keyword"]">
+            <button type="submit" class="btn btn-primary">
+                Tìm kiếm
+            </button>
+        </div>
+    </form>
+</div>
 
 <div class="container my-3">
     <!-- Hiển thị thông báo thành công nếu có SuccessMessage trong TempData -->
@@ -24,6 +47,17 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
+
+
+   @* <div class="d-flex justify-content-center my-3">  *@
+   @*    <div class="position-relative w-50"> *@
+   @*          <input type="search" id="searchBox" class="form-control ps-5" placeholder="Nhập tên hoặc số điện thoại..." />  *@
+   @*        <i class="fas fa-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>  *@
+   @*       </div>  *@
+   @*   </div>  *@
+
+
+
     <div class="d-flex align-items-center">
         <!-- Biểu tượng người dùng -->
         <i class="fa-solid fa-users-viewfinder"></i>
@@ -49,7 +83,8 @@
                     <th class="py-3">Thao tác</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="userTable">
+                @if(Model.Count()>0){
                 @foreach(var u in Model){
                     <tr>
                         <td>@u.id</td>
@@ -57,7 +92,8 @@
                         <td>@u.phoneNumber</td>
                         <td>@u.cccd</td>
                         <td>@u.email</td>
-                        <td>@u.balance VNĐ</td>
+                        <td>@(u.balance.ToString("N0")) VNĐ</td>
+
                         <td>
                             @if(u.role == "Admin"){
                                 <span class="fw-bold text-danger">@u.role</span>
@@ -76,6 +112,10 @@
 
                         </td>
                         <td>
+                                <button href="/user-detail/{@u.id}" data-id="@u.id" class="btnDetailUser btn btn-sm btn-warning me-2 px-2" type="button" title="Xem chi tiết">
+                                    <i class="fa-solid fa-info"></i>
+                            </button>
+                            
                             @if(u.status == "active"){
                                 <button data-id="@u.id" class="btnEditUser btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#modalEditUser" title="Cập nhật quyền">
                                     <i class="fas fa-user-edit"></i>
@@ -94,6 +134,13 @@
                                     
                         </td>
                     </tr>
+                }
+                }
+                else
+                {
+                <tr>
+                    <td colspan="5" class="text-center text-muted">Không có thông tin...</td>
+                </tr>
                 }
             </tbody>
         </table>
@@ -222,4 +269,8 @@
 
 @section Scripts {
     <script src="~/js/userManagement.js"></script>
+    <script>
+            
+
+</script>
 }

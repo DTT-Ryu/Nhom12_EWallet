@@ -107,7 +107,23 @@ namespace Nhom12_EWallet.Service
 
         public async Task<IEnumerable<UserManagementVM>> GetAllUsers()
         {
-            return await _userRepository.GetAllUsersWithRoleAsync();
+            var users = await _userRepository.GetAllUsersWithRoleAsync();
+
+            return users.Select(u => new UserManagementVM
+            {
+                id = u.IUserIdPk,
+                fullName = u.SFullName,
+                phoneNumber = u.SPhoneNumber,
+                cccd = u.SCccd,
+                email = u.SEmail,
+                balance = u.FBalance ?? 0,
+                birthDate = u.DBirthDate,
+                createdAt = u.DCreatedAt, //?? DateTime.MinValue;
+                updatedAt = u.DUpdatedAt,
+                roleId = u.IRoleIdFk,
+                role = u.IRoleIdFkNavigation?.SRoleName ?? "Chưa xác định",
+                status = u.SStatus
+            }).ToList();
         }
 
         public async Task<UserManagementVM> GetUserByID(int id)
@@ -123,6 +139,9 @@ namespace Nhom12_EWallet.Service
                 cccd = u.SCccd,
                 email = u.SEmail,
                 balance = u.FBalance ?? 0,
+                birthDate = u.DBirthDate,
+                createdAt = u.DCreatedAt, //?? DateTime.MinValue;
+                updatedAt = u.DUpdatedAt,
                 roleId = u.IRoleIdFk,
                 role = u.IRoleIdFkNavigation != null ? u.IRoleIdFkNavigation.SRoleName : "Chưa xác định",
                 status = u.SStatus
@@ -145,6 +164,38 @@ namespace Nhom12_EWallet.Service
         public async Task<bool> UpdateUserStatus(int userId)
         {
             return await _userRepository.UpdateUserStatus(userId);
+        }
+
+
+        public async Task<bool> GetUserByEmail(string email)
+        {
+            var result = await _userRepository.GetUserByEmail(email);
+            if (result == null) return true;
+            return false;
+        }
+
+        public async Task<UserManagementVM> UpdateUserInfor(int id, UserManagementVM model)
+        {
+            var user = await _userRepository.GetUserWithRoleById(id);
+
+            if (user == null) return null;
+
+            user.SFullName = model.fullName;
+            user.SEmail = model.email;
+            user.DBirthDate = model.birthDate;
+            user.DUpdatedAt = DateTime.Now;
+
+            await _userRepository.Update(user);
+            return new UserManagementVM
+            {
+                id = user.IUserIdPk,
+                fullName = user.SFullName,
+                phoneNumber = user.SPhoneNumber,
+                cccd = user.SCccd,
+                email = user.SEmail,
+                birthDate = user.DBirthDate,
+                balance = user.FBalance ?? 0m,
+            };
         }
     }
 }

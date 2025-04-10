@@ -1,85 +1,66 @@
-﻿@model List<Nhom12_EWallet.Models.TblBankAccount>
+﻿@* @model List<Nhom12_EWallet.ViewModels.DepositWithdrawVM> *@
 
 @{
     ViewData["Title"] = "Nạp tiền";
 }
+<div class="container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>@TempData["SuccessMessage"]</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
-<h2>Nạp tiền</h2>
+    <!-- Hiển thị thông báo lỗi nếu có ErrorMessage trong TempData -->
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong> @TempData["ErrorMessage"]</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="row justify-content-center">
+        <!-- Cột số dư tài khoản (trái) và form nạp tiền (phải) -->
+        <div class="col-lg-3 col-md-5">
+            <div class="card p-4 text-center">
+                <h6 class="fw-bold">SỐ DƯ TÀI KHOẢN HIỆN TẠI</h6>
+                <h2 class="text-success fw-bold" id="depoBalance">100,000 VNĐ</h2>
+            </div>
+        </div>
 
-@* @if (ViewBag.HasBankAccounts) *@
-@* { *@
-    <div class="row">
-        <div class="col-md-4">
-            <form id="depositForm">
-                <div class="form-group">
-                    <label for="bankAccountId">Tài khoản ngân hàng</label>
-                    <select class="form-control" id="bankAccountId" name="BankAccountId" required>
-                        <option value="">-- Chọn tài khoản ngân hàng --</option>
-                        @* @foreach (var bankAccount in Model) *@
-                        @* { *@
-                        @*     <option value="@bankAccount.IBankAccountIdPk"> *@
-                        @*         @bankAccount.SBankIdFk - @bankAccount.SAccountNumber (@bankAccount.Bank.SBankName) *@
-                        @*     </option> *@
-                        @* } *@
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="amount">Số tiền</label>
-                    <input type="number" class="form-control" id="amount" name="Amount" required min="1" step="0.01" />
-                </div>
-                <div class="form-group">
-                    <label for="pinCode">Mã PIN</label>
-                    <input type="password" class="form-control" id="pinCode" name="PinCode" required />
-                </div>
-                <div class="form-group">
-                    <label for="description">Mô tả</label>
-                    <input type="text" class="form-control" id="description" name="Description" />
-                </div>
-                <button type="submit" class="btn btn-primary">Nạp tiền</button>
-            </form>
-            <div id="depositMessage" class="mt-2"></div>
+        <div class="col-lg-6 col-md-7">
+            <div class="card p-4">
+                <h4 class="fw-bold text-center">Nạp tiền</h4>
+                <form id="depositForm">
+                    <div class="mb-3">
+                        <label for="depoSelectBankAcc" class="form-label">Phương thức thanh toán</label>
+                        <select class="form-control form-select" id="depoSelectBankAcc" name="bankAccId">
+                            @* render bằng ajax *@
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="depoAmount" class="form-label">Số tiền cần nạp (VNĐ)</label>
+                        <input type="number" class="form-control" id="depoAmount" placeholder="Nhập số tiền" name="ammount" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="repoPIN" class="form-label">Mã PIN</label>
+                        <input type="number" class="form-control" id="repoPIN" placeholder="Nhập mã PIN" required>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success w-100">Nạp tiền</button>
+                        <a href="/add-new-bannk-account" class="btn btn-primary w-100">Thêm tài khoản ngân hàng</a>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
-@* }  *@
-else
-{
-    <div class="alert alert-warning">
-        Bạn chưa liên kết tài khoản ngân hàng nào.
-        <a asp-action="CreateBankAccount" asp-controller="BankAccount" class="btn btn-primary mt-2">Thêm tài khoản ngân hàng</a>
-    </div>
-}
-
-@section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</div>
+@section Scripts{
+    <script src="~/js/deposit.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#depositForm').on('submit', function (e) {
-                e.preventDefault();
-
-                var formData = {
-                    BankAccountId: parseInt($('#bankAccountId').val()),
-                    Amount: parseFloat($('#amount').val()),
-                    PinCode: $('#pinCode').val(),
-                    Description: $('#description').val()
-                };
-
-                $.ajax({
-                    url: '@Url.Action("Deposit", "Transaction")',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(formData),
-                    success: function (response) {
-                        if (response.success) {
-                            window.location.href = response.redirectUrl;
-                        } else {
-                            $('#depositMessage').html('<div class="alert alert-danger">' + response.message + '</div>');
-                        }
-                    },
-                    error: function () {
-                        $('#depositMessage').html('<div class="alert alert-danger">Đã có lỗi xảy ra. Vui lòng thử lại.</div>');
-                    }
-                });
-            });
-        });
+                
     </script>
 }
+

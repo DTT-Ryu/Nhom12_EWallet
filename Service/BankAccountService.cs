@@ -65,23 +65,12 @@ namespace Nhom12_EWallet.Service
             return await _bankRepository.GetAll();
         }
 
-        public async Task<BankAccountManagementVM?> GetBankAccountByNumber(string n)
+        public async Task<bool> GetBankAccountByNumber(string n)
         {
             var u = await _bankAccountRepository.GetBankAccountByNumber(n);
             if (u == null)
-                return null;
-            return new BankAccountManagementVM
-            {
-                AccountId = u.IAccountIdPk,
-                UserId = u.IUserIdFk,
-                UserName = u.IUserIdFkNavigation?.SFullName ?? "Unknown",
-                UserPhoneNumber = u.IUserIdFkNavigation?.SPhoneNumber ?? "Unknown",
-                BankId = u.SBankIdFk,
-                BankName = u.SBankIdFkNavigation?.SBankName ?? "Unknown",
-                AccountNumber = u.SAccountNumber,
-                Status = u.SStatus,
-                Deleted = u.Deleted,
-            };
+                return false;
+            return true;
         }
 
         public async Task<bool> UpdateBankAccount(BankAccountManagementVM model)
@@ -92,6 +81,13 @@ namespace Nhom12_EWallet.Service
         public async Task<bool> UpdateBankAccountStatus(int id)
         {
             return await _bankAccountRepository.UpdateBankAccountStatus(id);
+        }
+
+        public async Task AddBankAcoount(int userId, TblBankAccount acc)
+        {
+            acc.IUserIdFk = userId;
+            await _bankAccountRepository.Add(acc);
+
         }
     }
 }

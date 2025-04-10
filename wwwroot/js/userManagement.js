@@ -1,4 +1,67 @@
-﻿
+﻿$(document).ready(function () {
+    $('#searchBox').on('input', function () {
+        var keyword = $(this).val();
+
+        $.ajax({
+            url: '/api/users/search',
+            type: 'GET',
+            data: { keyword: keyword },
+            success: function (response) {
+                $('#userTable').empty(); // Xóa dữ liệu cũ
+
+                if (response.length === 0) {
+                    $('#userTable').append('<tr><td colspan="9">Không tìm thấy người dùng!</td></tr>');
+                } else {
+                    $.each(response, function (index, user) {
+                        var roleClass = (user.role === "Admin") ? 'fw-bold text-danger' : '';
+                        var statusBadge = (user.status === "active") ?
+                            '<span class="badge bg-success">Hoạt động</span>' :
+                            '<span class="badge bg-danger">Khóa</span>';
+
+                        var actionButtons = '';
+                        if (user.status === "active") {
+                            actionButtons = `
+                                        <button data-id="${user.id}" class="btnEditUser btn btn-sm btn-primary me-2" type="button" data-bs-toggle="modal" data-bs-target="#modalEditUser" title="Cập nhật quyền">
+                                            <i class="fas fa-user-edit"></i>
+                                        </button>
+                                        <button data-id="${user.id}" class="btnBlockUser btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modalBlockUser" title="Khóa">
+                                            <i class="fas fa-user-lock"></i>
+                                        </button>
+                                    `;
+                        } else {
+                            actionButtons = `
+                                        <button class="suatk btn btn-sm btn-primary me-2" type="button" disabled>
+                                            <i class="fas fa-user-edit"></i>
+                                        </button>
+                                        <button data-id="${user.id}" class="btnBlockUser btn btn-sm btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modalBlockUser" title="Mở khóa">
+                                            <i class="fas fa-lock-open"></i>
+                                        </button>
+                                    `;
+                        }
+
+                        var row = `
+                                    <tr>
+                                        <td>${user.id}</td>
+                                        <td>${user.fullName}</td>
+                                        <td>${user.phoneNumber}</td>
+                                        <td>${user.cccd}</td>
+                                        <td>${user.email}</td>
+                                        <td>${parseInt(user.balance).toLocaleString()} VNĐ</td>
+                                        <td><span class="${roleClass}">${user.role}</span></td>
+                                        <td>${statusBadge}</td>
+                                        <td>${actionButtons}</td>
+                                    </tr>
+                                `;
+
+                        $('#userTable').append(row);
+                    });
+                }
+            }
+        });
+    });
+});
+
+
 //Hiển thị thông tin trước khi sửa
 $(document).ready(function () {
     $(".btnEditUser").click(function () {
@@ -18,7 +81,8 @@ $(document).ready(function () {
                     $("#editUserPhoneNumber").val(user.phoneNumber);
                     $("#editUserEmail").val(user.email);
                     $("#editUserCCCD").val(user.cccd);
-                    $("#editUserBalance").val(user.balance);
+                    $("#editUserBalance").val(user.balance ? user.balance.toLocaleString('en-US') + ' VNĐ' : '');
+
                     $("#editUserSelectRole").val(user.roleId);
 
                     $.ajax({
@@ -79,7 +143,7 @@ $(document).ready(function () {
                     $("#blockUserPhoneNumber").val(user.phoneNumber);
                     $("#blockUserEmail").val(user.email);
                     $("#blockUserCCCD").val(user.cccd);
-                    $("#blockUserBalance").val(user.balance);
+                    $("#blockUserBalance").val(user.balance ? user.balance.toLocaleString('en-US') + ' VNĐ' : '');
                     $("#blockUserSelectRole").val(user.roleId);
                     $.ajax({
                         url: "/Admin/UserManagement/GetAllRoles",

@@ -17,9 +17,17 @@ namespace Nhom12_EWallet.Areas.Admin.Controllers
         }
 
         [HttpGet("/bank-management")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string keyword)
         {
             var banks = await _bankService.GetAllBank();
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                keyword = keyword.ToLower();
+                banks = banks.Where(b =>
+                    b.SBankIdPk.ToLower().Contains(keyword) ||
+                    b.SBankName.ToLower().Contains(keyword)
+                ).ToList();
+            }
             return View(banks);
         }
 

@@ -50,9 +50,9 @@ namespace Nhom12_EWallet.Areas.Admin.Controllers
         public async Task<IActionResult> GetBankAccountByNumber(string n)
         {
             var acc = await _bankAccountService.GetBankAccountByNumber(n);
-            if (acc != null)
+            if (acc)
             {
-                return Json(new { success = true, acc = acc });
+                return Json(new { success = true });
             }
             else
             {

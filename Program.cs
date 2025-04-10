@@ -75,5 +75,16 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=User}/{action=Login}/{id?}");
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapControllerRoute(
+//        name: "default",
+//        pattern: "{controller=User}/{action=Login}/{id?}");
+
+//    endpoints.MapGet("/", async context =>
+//    {
+//        context.Response.Redirect("/login");
+//    });
+//});
 
 app.Run();

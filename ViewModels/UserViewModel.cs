@@ -92,12 +92,28 @@ namespace Nhom12_EWallet.ViewModels
         public string cccd { get; set; }
         public string email { get; set; }
         public decimal balance { get; set; }
+        public DateOnly birthDate { get; set; }
+        public DateTime? createdAt { get; set; }
+        public DateTime? updatedAt { get; set; }
         public byte roleId { get; set; }
         public string role {  get; set; }
         public string status { get; set; }
         //public List<TblRole> roles { get; set; }
         
     }
+
+    public class UserInforVM
+    {
+        public int id { get; set; }
+        public string fullName { get; set; }
+        public string phoneNumber { get; set; }
+        public string cccd { get; set; }
+        public string email { get; set; }
+        public DateOnly birthDate { get; set; }
+        public decimal balance { get; set; }
+
+    }
+
 
     public class AgeValidationAttribute : ValidationAttribute
     {
